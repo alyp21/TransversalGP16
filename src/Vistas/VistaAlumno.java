@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
+
 package Vistas;
 
 import Modelo.Alumno;
@@ -19,7 +16,6 @@ import java.util.logging.Logger;
 import javax.sound.sampled.DataLine;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import org.mariadb.jdbc.Connection;
 
 
 public class VistaAlumno extends javax.swing.JInternalFrame {
@@ -331,9 +327,10 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbBajaLogicaAlumnoActionPerformed
 
     private void jbActualizarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActualizarAlumnosActionPerformed
-//       int id=Integer.parseInt("", WIDTH);
-//       int dni = Integer.parseInt("",WIDTH);
-//       String nombre = t  int id = Integer.parseInt(txtId.getText());
+       int id=Integer.parseInt("", WIDTH);
+       int dni = Integer.parseInt("",WIDTH);
+      int nombre = Integer.parseInt(jtfNombreAlumno.getText());
+     
    
 
     
