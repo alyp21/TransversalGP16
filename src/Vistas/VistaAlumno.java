@@ -4,19 +4,38 @@
  */
 package Vistas;
 
-/**
- *
- * @author alybe
- */
+import Modelo.Alumno;
+import Persistencia.alumnoData;
+import java.lang.classfile.Superclass;
+import java.net.ConnectException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.DataLine;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.mariadb.jdbc.Connection;
+
+
 public class VistaAlumno extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form VistaAlumno
-     */
-    public VistaAlumno() {
-        initComponents();
-    }
+   DefaultTableModel modelotabla; 
 
+    
+    public  VistaAlumno() {
+        initComponents();
+        String[] titulos = {"DNI","Apellido","nombre","fecha nacimiento","estado"};
+        DefaultTableModel nuevoModelo = new DefaultTableModel(null,titulos);
+        jtAlumnos.setModel (nuevoModelo);
+     
+    }
+    private alumnoData alum = new alumnoData();
+    private Alumno alumnito = new Alumno();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,6 +45,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollBar1 = new javax.swing.JScrollBar();
         jlGestionAlumnos = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jlDni = new javax.swing.JLabel();
@@ -65,6 +85,12 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
         jlEstadoAlumno.setText("Estado:");
 
+        jtfDni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfDniActionPerformed(evt);
+            }
+        });
+
         jcbEstadoAlumno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
 
         jbVerAlumnos.setText("Ver Alumnos");
@@ -75,8 +101,18 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         });
 
         jbAltaLogicaAlumno.setText("Alta Logica");
+        jbAltaLogicaAlumno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAltaLogicaAlumnoActionPerformed(evt);
+            }
+        });
 
         jbBajaLogicaAlumno.setText("Baja Logica");
+        jbBajaLogicaAlumno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbBajaLogicaAlumnoActionPerformed(evt);
+            }
+        });
 
         jbInsertarAlumno.setText("Insertar");
         jbInsertarAlumno.addActionListener(new java.awt.event.ActionListener() {
@@ -86,6 +122,11 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         });
 
         jbActualizarAlumnos.setText("Actualizar");
+        jbActualizarAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbActualizarAlumnosActionPerformed(evt);
+            }
+        });
 
         jbEliminarAlumnos.setText("Eliminar");
         jbEliminarAlumnos.addActionListener(new java.awt.event.ActionListener() {
@@ -175,13 +216,10 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
         jtAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "Id", "Dni", "Apellido", "Nombre", "Fecha de nacimiento", "Estado"
+                "Dni", "Apellido", "Nombre", "Fecha de nacimiento", "Estado"
             }
         ));
         jScrollPane2.setViewportView(jtAlumnos);
@@ -227,23 +265,89 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    
     private void jbVerAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbVerAlumnosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jbVerAlumnosActionPerformed
 
     private void jbInsertarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbInsertarAlumnoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbInsertarAlumnoActionPerformed
+       
+        String dnistr = jtfDni.getText();
+        String apellido = jtfApellido.getText();
+        String nombre = jtfNombreAlumno.getText();
+        String fechastr = jtfFechaNacimiento.getText();
+        String estadofals = jcbEstadoAlumno.getSelectedItem().toString();
+        int dni = 0;
+        LocalDate fechaNacimiento = null;
+        boolean estado = false;
+        try {
+            dni=Integer.parseInt(dnistr);
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            fechaNacimiento = LocalDate.now();
+            estado = estadofals.equalsIgnoreCase("activo");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,"Error en la forma de la fecha","Error de conversion",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
+        Alumno nuevoAlumno = new Alumno(dni,apellido,nombre,fechaNacimiento,estado);
+        DefaultTableModel modelo = (DefaultTableModel) jtAlumnos.getModel();
+        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        Object[] fila = new Object[]{
+        nuevoAlumno.getDni(),
+        nuevoAlumno.getApellido(),
+        nuevoAlumno.getNombre(),
+       nuevoAlumno.getFechaNacimiento().format(formatoSalida),
+        nuevoAlumno.getEstadoString(),
+        };
+                
+        modelo.addRow(fila);
+    }//GEN-LAST:event_jbInsertarAlumnoActionPerformed
+    
+  
+    
+    public void refreshTable(){
+     while(modelotabla.getRowCount() > 0){
+       modelotabla.getRowCount();
+       }
+    }
+    
     private void jbEliminarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarAlumnosActionPerformed
-        // TODO add your handling code here:
+       int filaSeleccionada = jtAlumnos.getSelectedRow();
+       if(filaSeleccionada != -1){
+       modelotabla.removeRow(filaSeleccionada);
+       }else{JOptionPane.showMessageDialog(this, "seleccione una fila para eliminar");}
     }//GEN-LAST:event_jbEliminarAlumnosActionPerformed
+ 
+    private void jbAltaLogicaAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAltaLogicaAlumnoActionPerformed
+        alum.altaLogica(WIDTH);
+    JOptionPane.showMessageDialog(this,"alumno dado de alta");
+    }//GEN-LAST:event_jbAltaLogicaAlumnoActionPerformed
+
+    private void jbBajaLogicaAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBajaLogicaAlumnoActionPerformed
+        alum.bajaLogica(WIDTH);
+        JOptionPane.showMessageDialog(this,"alumno dado de baja");
+    }//GEN-LAST:event_jbBajaLogicaAlumnoActionPerformed
+
+    private void jbActualizarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActualizarAlumnosActionPerformed
+//       int id=Integer.parseInt("", WIDTH);
+//       int dni = Integer.parseInt("",WIDTH);
+//       String nombre = t  int id = Integer.parseInt(txtId.getText());
+   
+
+    
+    }//GEN-LAST:event_jbActualizarAlumnosActionPerformed
+
+    private void jtfDniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfDniActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfDniActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbActualizarAlumnos;
     private javax.swing.JButton jbAltaLogicaAlumno;

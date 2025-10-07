@@ -4,6 +4,9 @@
  */
 package Vistas;
 
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author alybe
@@ -15,6 +18,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
      */
     public VistaPrincipal() {
         initComponents();
+        
     }
 
     /**

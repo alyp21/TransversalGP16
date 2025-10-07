@@ -2,6 +2,7 @@
 package Modelo;
 
 import java.time.LocalDate;
+
 import java.util.Objects;
 
 
@@ -14,20 +15,8 @@ public class Alumno {
     private LocalDate fechaNacimiento;
     private boolean estado;
 
-    public Alumno() {
-    }
-
-    
-    public Alumno(int id, int dni, String nombre, String apellido, LocalDate Fechanacimiento, boolean estado) {
-        this.id = id;
-        this.dni = dni;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.fechaNacimiento = Fechanacimiento;
-        this.estado = estado;
-    }
-
-    public Alumno(int dni, String nombre, String apellido, LocalDate fechaNacimiento, boolean estado) {
+   
+ public Alumno(int dni, String nombre, String apellido, LocalDate fechaNacimiento, boolean estado) {
         
         this.dni = dni;
         this.nombre = nombre;
@@ -35,7 +24,19 @@ public class Alumno {
         this.fechaNacimiento = fechaNacimiento;
         this.estado = estado;
     }
+    
+    public Alumno(int id, int dni, String nombre, String apellido, LocalDate Fechanacimiento, boolean estado) {
+        
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fechaNacimiento = Fechanacimiento;
+        this.estado = estado;
+    }
 
+   
+    public Alumno() {
+    }
     public int getId() {
         return id;
     }
@@ -129,6 +130,10 @@ public class Alumno {
     @Override
     public String toString() {
         return "Alumno " + id + ", dni: " + dni + ", nombre: " + nombre + ", apellido: " + apellido + ", fechaNacimiento: " + fechaNacimiento + ", estado: " + estado;
+    }
+
+    public Object getEstadoString() {
+       return this.estado ? "Activo" : "Inactivo";
     }
     
 }

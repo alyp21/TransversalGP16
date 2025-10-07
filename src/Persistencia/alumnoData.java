@@ -8,9 +8,13 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 public class alumnoData {
+     public alumnoData() {
+        
+    }
     
-    private final Connection con;
-
+    private Connection con = null;
+   
+    
     public alumnoData(Connection con) {
         this.con = con;
     }
