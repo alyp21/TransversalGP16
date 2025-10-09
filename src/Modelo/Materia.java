@@ -5,12 +5,13 @@ import java.util.Objects;
 
 
 public class Materia {
-    private int idMateria;
+    private int idMateria = -1;
     private String nombreMateria;
     private int anioMateria;
     private boolean estadoMateria;
 
     public Materia() {
+        
     }
 
     public Materia(String nombreMateria, int anioMateria, boolean estadoMateria) {
