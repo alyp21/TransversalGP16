@@ -3,7 +3,6 @@ package Vistas;
 
 import Modelo.Alumno;
 import Persistencia.alumnoData;
-import java.lang.classfile.Superclass;
 import java.net.ConnectException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +21,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
    DefaultTableModel modelotabla; 
 
-    
     public  VistaAlumno() {
         initComponents();
         String[] titulos = {"DNI","Apellido","nombre","fecha nacimiento","estado"};
@@ -301,8 +299,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         modelo.addRow(fila);
     }//GEN-LAST:event_jbInsertarAlumnoActionPerformed
     
-  
-    
     public void refreshTable(){
      while(modelotabla.getRowCount() > 0){
        modelotabla.getRowCount();
@@ -330,10 +326,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
        int id=Integer.parseInt("", WIDTH);
        int dni = Integer.parseInt("",WIDTH);
       int nombre = Integer.parseInt(jtfNombreAlumno.getText());
-     
-   
-
-    
     }//GEN-LAST:event_jbActualizarAlumnosActionPerformed
 
     private void jtfDniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfDniActionPerformed
