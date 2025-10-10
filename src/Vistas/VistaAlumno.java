@@ -2,6 +2,7 @@
 package Vistas;
 
 import Modelo.Alumno;
+import Modelo.Conexion;
 import Persistencia.alumnoData;
 import java.net.ConnectException;
 import java.text.ParseException;
@@ -10,26 +11,33 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.DataLine;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.mariadb.jdbc.Connection;
 
 
 public class VistaAlumno extends javax.swing.JInternalFrame {
 
-   DefaultTableModel modelotabla; 
-
+   DefaultTableModel modeloTabla; 
+   private Connection con;
+   private alumnoData alum;
+   
     public  VistaAlumno() {
         initComponents();
+        con= (Connection) Conexion.getConexion();
+        alum= new alumnoData(con);
+        armarCabeceraTabla();
         String[] titulos = {"DNI","Apellido","nombre","fecha nacimiento","estado"};
         DefaultTableModel nuevoModelo = new DefaultTableModel(null,titulos);
         jtAlumnos.setModel (nuevoModelo);
-     
+        jcbEstadoAlumno.setModel(new DefaultComboBoxModel<>(new String[] {"Activo", "Inactivo"}));
     }
-    private alumnoData alum = new alumnoData();
-    private Alumno alumnito = new Alumno();
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -263,69 +271,121 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     
     private void jbVerAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbVerAlumnosActionPerformed
         // TODO add your handling code here:
+        borrarFilasTabla();
+        for (Alumno a : alum.verAlumnos()) {
+        modeloTabla.addRow(new Object[]{
+            a.getDni(),
+            a.getApellido(),
+            a.getNombre(),
+            a.getFechaNacimiento(),
+            a.isEstado() ? "Activo" : "Inactivo"
+        });
+    }
+
     }//GEN-LAST:event_jbVerAlumnosActionPerformed
 
     private void jbInsertarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbInsertarAlumnoActionPerformed
-       
-        String dnistr = jtfDni.getText();
-        String apellido = jtfApellido.getText();
-        String nombre = jtfNombreAlumno.getText();
-        String fechastr = jtfFechaNacimiento.getText();
-        String estadofals = jcbEstadoAlumno.getSelectedItem().toString();
-        int dni = 0;
-        LocalDate fechaNacimiento = null;
-        boolean estado = false;
-        try {
-            dni=Integer.parseInt(dnistr);
-            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-            fechaNacimiento = LocalDate.now();
-            estado = estadofals.equalsIgnoreCase("activo");
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this,"Error en la forma de la fecha","Error de conversion",JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Alumno nuevoAlumno = new Alumno(dni,apellido,nombre,fechaNacimiento,estado);
-        DefaultTableModel modelo = (DefaultTableModel) jtAlumnos.getModel();
-        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        Object[] fila = new Object[]{
-        nuevoAlumno.getDni(),
-        nuevoAlumno.getApellido(),
-        nuevoAlumno.getNombre(),
-       nuevoAlumno.getFechaNacimiento().format(formatoSalida),
-        nuevoAlumno.getEstadoString(),
-        };
-                
-        modelo.addRow(fila);
+       try{
+           Alumno alumnito = new Alumno();
+           alumnito.setDni(Integer.parseInt(jtfDni.getText()));
+           alumnito.setApellido(jtfApellido.getText());
+           alumnito.setNombre(jtfNombreAlumno.getText());
+           alumnito.setFechaNacimiento(LocalDate.parse(jtfFechaNacimiento.getText()));
+           String estadoSeleccionado = (String) jcbEstadoAlumno.getSelectedItem();
+           alumnito.setEstado(estadoSeleccionado.equals("Activo"));
+           
+           alum.guardarAlumno(alumnito);
+           JOptionPane.showMessageDialog(this, "Alumno guardado con exito");
+       }catch(Exception e){
+           JOptionPane.showMessageDialog(this, "Error al guardar el alumno"+ e.getMessage());
+       }
     }//GEN-LAST:event_jbInsertarAlumnoActionPerformed
     
     public void refreshTable(){
-     while(modelotabla.getRowCount() > 0){
-       modelotabla.getRowCount();
+     while(modeloTabla.getRowCount() > 0){
+       modeloTabla.getRowCount();
        }
     }
     
     private void jbEliminarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarAlumnosActionPerformed
-       int filaSeleccionada = jtAlumnos.getSelectedRow();
-       if(filaSeleccionada != -1){
-       modelotabla.removeRow(filaSeleccionada);
-       }else{JOptionPane.showMessageDialog(this, "seleccione una fila para eliminar");}
+       try {
+        int dni = Integer.parseInt(jtfDni.getText());
+        alum.eliminarAlumno(dni);
+        JOptionPane.showMessageDialog(this, "Alumno eliminado");
+        limpiarCampos();
+        cargarAlumnos();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
+    }
     }//GEN-LAST:event_jbEliminarAlumnosActionPerformed
  
     private void jbAltaLogicaAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAltaLogicaAlumnoActionPerformed
-        alum.altaLogica(WIDTH);
-    JOptionPane.showMessageDialog(this,"alumno dado de alta");
+        try {
+        int dni = Integer.parseInt(jtfDni.getText());
+        Alumno a = alum.buscarAlumno(dni);
+
+        if (a != null) {
+            if (!a.isEstado()) {  // Solo si está inactivo
+                alum.altaLogica(dni);
+                a.setEstado(true);
+                jcbEstadoAlumno.setSelectedItem("Activo");
+                JOptionPane.showMessageDialog(this, "Alumno dado de alta correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(this, "El alumno ya esta activo.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontro un alumno con ese DNI.");
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar un DNI váalido.");
+    }
     }//GEN-LAST:event_jbAltaLogicaAlumnoActionPerformed
 
     private void jbBajaLogicaAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBajaLogicaAlumnoActionPerformed
-        alum.bajaLogica(WIDTH);
-        JOptionPane.showMessageDialog(this,"alumno dado de baja");
+        try {
+        int dni = Integer.parseInt(jtfDni.getText());
+        Alumno a = alum.buscarAlumno(dni);
+
+        if (a != null) {
+            if (a.isEstado()) {
+                alum.bajaLogica(dni);
+                a.setEstado(false);
+                jcbEstadoAlumno.setSelectedItem("Inactivo");
+                JOptionPane.showMessageDialog(this, "Alumno dado de baja correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(this, "El alumno ya esta inactivo.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontro un alumno con ese DNI.");
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar un DNI valido.");
+    }
     }//GEN-LAST:event_jbBajaLogicaAlumnoActionPerformed
 
     private void jbActualizarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActualizarAlumnosActionPerformed
-       int id=Integer.parseInt("", WIDTH);
-       int dni = Integer.parseInt("",WIDTH);
-      int nombre = Integer.parseInt(jtfNombreAlumno.getText());
+        try {
+        int dni = Integer.parseInt(jtfDni.getText());
+        Alumno a = alum.buscarAlumno(dni);
+
+        if (a != null) {
+            a.setApellido(jtfApellido.getText());
+            a.setNombre(jtfNombreAlumno.getText());
+            a.setFechaNacimiento(LocalDate.parse(jtfFechaNacimiento.getText()));
+            a.setEstado(jcbEstadoAlumno.getSelectedItem().equals("Activo"));
+
+            alum.actualizarAlumno(dni, title, title);
+            JOptionPane.showMessageDialog(this, "Alumno actualizado correctamente");
+            cargarAlumnos();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró alumno con ese DNI");
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al actualizar: " + e.getMessage());
+    }
+
     }//GEN-LAST:event_jbActualizarAlumnosActionPerformed
 
     private void jtfDniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfDniActionPerformed
@@ -351,10 +411,46 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jlFechaNacimiento;
     private javax.swing.JLabel jlGestionAlumnos;
     private javax.swing.JLabel jlNombreAlumno;
-    private javax.swing.JTable jtAlumnos;
+    public static javax.swing.JTable jtAlumnos;
     private javax.swing.JTextField jtfApellido;
     private javax.swing.JTextField jtfDni;
     private javax.swing.JTextField jtfFechaNacimiento;
     private javax.swing.JTextField jtfNombreAlumno;
     // End of variables declaration//GEN-END:variables
+    
+    private void cargarAlumnos() {
+    modeloTabla.setRowCount(0);
+    List<Alumno> lista = alum.verAlumnos();
+
+    for (Alumno a : lista) {
+        modeloTabla.addRow(new Object[]{
+            a.getDni(),
+            a.getApellido(),
+            a.getNombre(),
+            a.getFechaNacimiento(),
+            a.isEstado() ? "Activo" : "Inactivo"
+        });
+    }
+    }
+    private void limpiarCampos() {
+    jtfDni.setText("");
+    jtfApellido.setText("");
+    jtfNombreAlumno.setText("");
+    jtfFechaNacimiento.setText("");
+    jcbEstadoAlumno.setSelectedIndex(0);
+}
+    private void borrarFilasTabla() {
+    int filas = modeloTabla.getRowCount() - 1;
+    for (int i = filas; i >= 0; i--) {
+        modeloTabla.removeRow(i);
+    }
+}
+    private void armarCabeceraTabla() {
+    modeloTabla.addColumn("DNI");
+    modeloTabla.addColumn("Apellido");
+    modeloTabla.addColumn("Nombre");
+    modeloTabla.addColumn("Fecha Nacimiento");
+    modeloTabla.addColumn("Estado");
+    jtAlumnos.setModel(modeloTabla);
+}
 }

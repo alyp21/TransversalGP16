@@ -1,10 +1,12 @@
 package Persistencia;
 
 import Modelo.Alumno;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class alumnoData {
@@ -37,7 +39,8 @@ public class alumnoData {
                 JOptionPane.showMessageDialog(null, "Error de conexión: " + ex.getMessage());
         }
     }
-    public void buscarAlumno(int dni){
+    public Alumno buscarAlumno(int dni){
+        Alumno alumno= null;
         String sql = "SELECT * FROM alumno WHERE dni = ?";
         
         try{
@@ -47,7 +50,7 @@ public class alumnoData {
             ResultSet resultado = ps.executeQuery();
             
             if (resultado.next()){
-                Alumno alumno = new Alumno();
+                alumno = new Alumno();
                 System.out.println("ID:" + resultado.getInt("idAlumno"));
                 System.out.println("Dni:" + resultado.getInt("dni"));
                 System.out.println("Apellido:" + resultado.getString("apellido"));
@@ -61,8 +64,10 @@ public class alumnoData {
         }catch (SQLException ex){
             JOptionPane.showMessageDialog(null, "Error de conexion: " + ex.getMessage());
         }
+        return alumno;
     }
-    public void verAlumnos(){
+    public List <Alumno> verAlumnos(){
+        List <Alumno> alumnos= new ArrayList();
         String sql = "SELECT * FROM alumno";
         
         try{
@@ -70,19 +75,21 @@ public class alumnoData {
             ResultSet resultado = ps.executeQuery();
             
             while (resultado.next()){
+                Alumno a= new Alumno();
                 System.out.println("ID:" + resultado.getInt("idAlumno"));
                 System.out.println("Dni:" + resultado.getInt("dni"));
                 System.out.println("Apellido:" + resultado.getString("apellido"));
                 System.out.println("Nombre:" + resultado.getString("nombre"));
                 System.out.println("Fecha de Nacimiento" + resultado.getDate("fechaNacimiento"));
                 System.out.println("Estado:" + resultado.getBoolean("estado"));
+                alumnos.add(a);
             }
             resultado.close();
             ps.close();
         } catch (SQLException ex){
             JOptionPane.showMessageDialog(null,"Error de conexion: " + ex.getMessage());
         }
-       
+       return alumnos;
     }
     public void actualizarAlumno(int dni, String apellidoActualizado, String nombreActualizado){
         String sql = "UPDATE alumno SET apellido = ? , nombre = ? WHERE dni = ?";
