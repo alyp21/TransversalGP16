@@ -76,13 +76,13 @@ public class alumnoData {
             
             while (resultado.next()){
                 Alumno a= new Alumno();
-                System.out.println("ID:" + resultado.getInt("idAlumno"));
-                System.out.println("Dni:" + resultado.getInt("dni"));
-                System.out.println("Apellido:" + resultado.getString("apellido"));
-                System.out.println("Nombre:" + resultado.getString("nombre"));
-                System.out.println("Fecha de Nacimiento" + resultado.getDate("fechaNacimiento"));
-                System.out.println("Estado:" + resultado.getBoolean("estado"));
+                a.setDni(resultado.getInt("dni"));
+                a.setApellido(resultado.getString("apellido"));
+                a.setNombre(resultado.getString("nombre"));
+                a.setFechaNacimiento(resultado.getDate("fechaNacimiento").toLocalDate());
+                a.setEstado(resultado.getBoolean("estado"));
                 alumnos.add(a);
+                
             }
             resultado.close();
             ps.close();
@@ -91,15 +91,17 @@ public class alumnoData {
         }
        return alumnos;
     }
-    public void actualizarAlumno(int dni, String apellidoActualizado, String nombreActualizado){
-        String sql = "UPDATE alumno SET apellido = ? , nombre = ? WHERE dni = ?";
+    public void actualizarAlumno(Alumno a){
+        String sql = "UPDATE alumno SET apellido = ? , nombre = ?, fechaNacimiento = ?, estado = ?, WHERE dni = ?";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             
-            ps.setString(1, apellidoActualizado);
-            ps.setString(2,nombreActualizado);
-            ps.setInt(3, dni);
+            ps.setString(1, a.getApellido());
+            ps.setString(2, a.getNombre());
+            ps.setDate(3, java.sql.Date.valueOf(a.getFechaNacimiento()));
+            ps.setBoolean(4, a.isEstado());
+            ps.setInt(5, a.getDni());
             
             int registros = ps.executeUpdate();
             
@@ -131,8 +133,6 @@ public class alumnoData {
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
-            
-            ps.setBoolean(1, false);
             ps.setInt(2, dni);
             
             int registros = ps.executeUpdate();
@@ -152,8 +152,6 @@ public class alumnoData {
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
-            
-            ps.setBoolean(1, true);
             ps.setInt(2, dni);
             
             int registros = ps.executeUpdate();

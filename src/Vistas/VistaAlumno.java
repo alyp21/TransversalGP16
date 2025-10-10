@@ -4,17 +4,10 @@ package Vistas;
 import Modelo.Alumno;
 import Modelo.Conexion;
 import Persistencia.alumnoData;
-import java.net.ConnectException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.awt.HeadlessException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.ZoneId;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sound.sampled.DataLine;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -32,9 +25,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         con= (Connection) Conexion.getConexion();
         alum= new alumnoData(con);
         armarCabeceraTabla();
-        String[] titulos = {"DNI","Apellido","nombre","fecha nacimiento","estado"};
-        DefaultTableModel nuevoModelo = new DefaultTableModel(null,titulos);
-        jtAlumnos.setModel (nuevoModelo);
         jcbEstadoAlumno.setModel(new DefaultComboBoxModel<>(new String[] {"Activo", "Inactivo"}));
     }
     
@@ -48,6 +38,8 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollBar1 = new javax.swing.JScrollBar();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jlGestionAlumnos = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jlDni = new javax.swing.JLabel();
@@ -67,8 +59,21 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         jbActualizarAlumnos = new javax.swing.JButton();
         jbEliminarAlumnos = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
         jtAlumnos = new javax.swing.JTable();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
         setClosable(true);
 
@@ -218,23 +223,26 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
         jtAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Dni", "Apellido", "Nombre", "Fecha de nacimiento", "Estado"
+                "Dni", "Apellido", "Nombre", "Fecha de Nacimiento", "Estado"
             }
         ));
-        jScrollPane2.setViewportView(jtAlumnos);
+        jScrollPane3.setViewportView(jtAlumnos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
+            .addComponent(jScrollPane3)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -248,9 +256,9 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                         .addComponent(jlGestionAlumnos))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -262,7 +270,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -271,7 +279,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     
     private void jbVerAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbVerAlumnosActionPerformed
         // TODO add your handling code here:
-        borrarFilasTabla();
+        borrarFilas();
         for (Alumno a : alum.verAlumnos()) {
         modeloTabla.addRow(new Object[]{
             a.getDni(),
@@ -296,17 +304,20 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
            
            alum.guardarAlumno(alumnito);
            JOptionPane.showMessageDialog(this, "Alumno guardado con exito");
-       }catch(Exception e){
+           jbInsertarAlumno.setEnabled(false);
+           jbActualizarAlumnos.setEnabled(false);
+           jbEliminarAlumnos.setEnabled(false);
+           jbAltaLogicaAlumno.setEnabled(false);
+           jbBajaLogicaAlumno.setEnabled(false);
+
+           limpiarCampos();
+           cargarAlumnos();
+           
+       }catch(HeadlessException | NumberFormatException e){
            JOptionPane.showMessageDialog(this, "Error al guardar el alumno"+ e.getMessage());
        }
     }//GEN-LAST:event_jbInsertarAlumnoActionPerformed
-    
-    public void refreshTable(){
-     while(modeloTabla.getRowCount() > 0){
-       modeloTabla.getRowCount();
-       }
-    }
-    
+
     private void jbEliminarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarAlumnosActionPerformed
        try {
         int dni = Integer.parseInt(jtfDni.getText());
@@ -314,10 +325,10 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(this, "Alumno eliminado");
         limpiarCampos();
         cargarAlumnos();
-
-    } catch (Exception e) {
+        
+       } catch (HeadlessException | NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
-    }
+       }
     }//GEN-LAST:event_jbEliminarAlumnosActionPerformed
  
     private void jbAltaLogicaAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAltaLogicaAlumnoActionPerformed
@@ -338,7 +349,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "No se encontro un alumno con ese DNI.");
         }
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Debe ingresar un DNI váalido.");
+        JOptionPane.showMessageDialog(this, "Debe ingresar un DNI valido.");
     }
     }//GEN-LAST:event_jbAltaLogicaAlumnoActionPerformed
 
@@ -366,26 +377,21 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
     private void jbActualizarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActualizarAlumnosActionPerformed
         try {
-        int dni = Integer.parseInt(jtfDni.getText());
-        Alumno a = alum.buscarAlumno(dni);
+            int dni = Integer.parseInt(jtfDni.getText());
+            String apellido = jtfApellido.getText();
+            String nombre = jtfNombreAlumno.getText();
+            boolean estado = jcbEstadoAlumno.getSelectedItem().equals("Activo");
 
-        if (a != null) {
-            a.setApellido(jtfApellido.getText());
-            a.setNombre(jtfNombreAlumno.getText());
-            a.setFechaNacimiento(LocalDate.parse(jtfFechaNacimiento.getText()));
-            a.setEstado(jcbEstadoAlumno.getSelectedItem().equals("Activo"));
-
-            alum.actualizarAlumno(dni, title, title);
-            JOptionPane.showMessageDialog(this, "Alumno actualizado correctamente");
-            cargarAlumnos();
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró alumno con ese DNI");
+            Alumno a = new Alumno();
+            a.setDni(dni);
+            a.setApellido(apellido);
+            a.setNombre(nombre);
+            a.setEstado(estado);
+            alum.actualizarAlumno(a);
+            
+        } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "No se encontro ningun alumno con este dni.");
         }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al actualizar: " + e.getMessage());
-    }
-
     }//GEN-LAST:event_jbActualizarAlumnosActionPerformed
 
     private void jtfDniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfDniActionPerformed
@@ -397,7 +403,9 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollBar jScrollBar1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
     private javax.swing.JButton jbActualizarAlumnos;
     private javax.swing.JButton jbAltaLogicaAlumno;
     private javax.swing.JButton jbBajaLogicaAlumno;
@@ -411,7 +419,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jlFechaNacimiento;
     private javax.swing.JLabel jlGestionAlumnos;
     private javax.swing.JLabel jlNombreAlumno;
-    public static javax.swing.JTable jtAlumnos;
+    private javax.swing.JTable jtAlumnos;
     private javax.swing.JTextField jtfApellido;
     private javax.swing.JTextField jtfDni;
     private javax.swing.JTextField jtfFechaNacimiento;
@@ -439,18 +447,19 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     jtfFechaNacimiento.setText("");
     jcbEstadoAlumno.setSelectedIndex(0);
 }
-    private void borrarFilasTabla() {
-    int filas = modeloTabla.getRowCount() - 1;
-    for (int i = filas; i >= 0; i--) {
+    private void borrarFilas() {
+        int filas = modeloTabla.getRowCount() - 1;
+        for (int i = filas; i >= 0; i--) {
         modeloTabla.removeRow(i);
     }
 }
     private void armarCabeceraTabla() {
-    modeloTabla.addColumn("DNI");
-    modeloTabla.addColumn("Apellido");
-    modeloTabla.addColumn("Nombre");
-    modeloTabla.addColumn("Fecha Nacimiento");
-    modeloTabla.addColumn("Estado");
-    jtAlumnos.setModel(modeloTabla);
-}
+        modeloTabla = new DefaultTableModel();
+        modeloTabla.addColumn("Dni");
+        modeloTabla.addColumn("Apellido");
+        modeloTabla.addColumn("Nombre");
+        modeloTabla.addColumn("Fecha de Nacimiento");
+        modeloTabla.addColumn("Estado");
+        jtAlumnos.setModel(modeloTabla);
+    }
 }
