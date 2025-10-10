@@ -186,6 +186,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Baja Logica"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbBajaLogicaMateriaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jbInsertarMateria">
           <Properties>
@@ -199,11 +202,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Actualizar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbActualizarMateriasActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jbEliminarMateria">
           <Properties>
             <Property name="text" type="java.lang.String" value="Eliminar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbEliminarMateriaActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -1,13 +1,30 @@
 
 package Vistas;
 
+import Modelo.Conexion;
+import Modelo.Materia;
+import Persistencia.materiaData;
+import java.awt.HeadlessException;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.mariadb.jdbc.Connection;
+
 public class VistaMateria extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form VistaAlumno
-     */
+    
+    private Connection con;
+    private materiaData mat;
+    DefaultTableModel modelo;
+    
     public VistaMateria() {
         initComponents();
+        con = (Connection) Conexion.getConexion();
+        mat = new materiaData(con);
+        armarCabecera();
+        jcbEstadoMateria.setModel(new DefaultComboBoxModel<>(new String[] {"Activo", "Inactivo"}));
+        
     }
 
     /**
@@ -67,6 +84,11 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         });
 
         jbBajaLogicaMateria.setText("Baja Logica");
+        jbBajaLogicaMateria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbBajaLogicaMateriaActionPerformed(evt);
+            }
+        });
 
         jbInsertarMateria.setText("Insertar");
         jbInsertarMateria.addActionListener(new java.awt.event.ActionListener() {
@@ -76,8 +98,18 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         });
 
         jbActualizarMaterias.setText("Actualizar");
+        jbActualizarMaterias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbActualizarMateriasActionPerformed(evt);
+            }
+        });
 
         jbEliminarMateria.setText("Eliminar");
+        jbEliminarMateria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEliminarMateriaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -186,16 +218,154 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbVerMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbVerMateriasActionPerformed
-        // TODO add your handling code here:
+       
+        cargarMaterias();
+        
+           jbInsertarMateria.setEnabled(true);
+           jbActualizarMaterias.setEnabled(true);
+           jbEliminarMateria.setEnabled(true);
+           jbAltaLogicaMateria.setEnabled(true);
+           jbBajaLogicaMateria.setEnabled(true);
     }//GEN-LAST:event_jbVerMateriasActionPerformed
 
     private void jbInsertarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbInsertarMateriaActionPerformed
-        // TODO add your handling code here:
+        try{
+           Materia materia = new Materia();
+
+           materia.setNombreMateria(jtfNombreMateria.getText());
+           materia.setAnioMateria(Integer.parseInt(jtfAño.getText()));
+           String estadoSeleccionado = (String) jcbEstadoMateria.getSelectedItem();
+           materia.setEstadoMateria(estadoSeleccionado.equals("Activo"));
+           
+           mat.guardarMateria(materia);
+           JOptionPane.showMessageDialog(this, "Materia guardada con exito");
+           
+           jbInsertarMateria.setEnabled(false);
+           jbActualizarMaterias.setEnabled(false);
+           jbEliminarMateria.setEnabled(false);
+           jbAltaLogicaMateria.setEnabled(false);
+           jbBajaLogicaMateria.setEnabled(false);
+
+           limpiarCampos();
+           cargarMaterias();
+           
+       }catch(HeadlessException | NumberFormatException e){
+           JOptionPane.showMessageDialog(this, "Error al guardar la materia"+ e.getMessage());
+       }
     }//GEN-LAST:event_jbInsertarMateriaActionPerformed
 
     private void jbAltaLogicaMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAltaLogicaMateriaActionPerformed
-        // TODO add your handling code here:
+        try {
+            String nombreMateria = jtfNombreMateria.getText();
+            Materia m = mat.buscarMateria(nombreMateria);
+
+        if (m != null) {
+            if (m.isEstadoMateria()) {
+                mat.altaLogicaMateria(nombreMateria);
+                m.setEstadoMateria(true);
+                jcbEstadoMateria.setSelectedItem("Activo");
+                JOptionPane.showMessageDialog(this, "Materia dada de alta correctamente.");
+                
+                jbInsertarMateria.setEnabled(false);
+                jbActualizarMaterias.setEnabled(false);
+                jbEliminarMateria.setEnabled(false);
+                jbAltaLogicaMateria.setEnabled(false);
+                jbBajaLogicaMateria.setEnabled(false);
+                
+                limpiarCampos();
+                cargarMaterias();
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "La materia ya esta activa.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontro una materia con este nombre.");
+        } 
+            } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un nombre valido.");
+            }                                                      
     }//GEN-LAST:event_jbAltaLogicaMateriaActionPerformed
+
+    private void jbActualizarMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActualizarMateriasActionPerformed
+            
+        try {
+            
+            
+            String nombre = jtfNombreMateria.getText();
+            int anio = Integer.parseInt(jtfAño.getText());
+            boolean estado = jcbEstadoMateria.getSelectedItem().equals("Activo");
+
+            Materia m = new Materia();
+            m.setNombreMateria(nombre);
+            m.setAnioMateria(anio);
+            m.setEstadoMateria(estado);
+            mat.actualizarMateria(m);
+            
+            jbInsertarMateria.setEnabled(false);
+            jbActualizarMaterias.setEnabled(false);
+            jbEliminarMateria.setEnabled(false);
+            jbAltaLogicaMateria.setEnabled(false);
+            jbBajaLogicaMateria.setEnabled(false);
+            
+            limpiarCampos();
+            cargarMaterias();
+            
+        } catch (NumberFormatException e) {
+           JOptionPane.showMessageDialog(this, "No se encontro ninguna materia con este nombre.");
+        }
+    }//GEN-LAST:event_jbActualizarMateriasActionPerformed
+
+    private void jbBajaLogicaMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBajaLogicaMateriaActionPerformed
+        try {
+            String nombreMateria = jtfNombreMateria.getText();
+            Materia m = mat.buscarMateria(nombreMateria);
+
+        if (m != null) {
+            if (m.isEstadoMateria()) {
+                mat.bajaLogicaMateria(nombreMateria);
+                m.setEstadoMateria(false);
+                jcbEstadoMateria.setSelectedItem("Inactivo");
+                JOptionPane.showMessageDialog(this, "Materia dada de baja correctamente.");
+                
+                jbInsertarMateria.setEnabled(false);
+                jbActualizarMaterias.setEnabled(false);
+                jbEliminarMateria.setEnabled(false);
+                jbAltaLogicaMateria.setEnabled(false);
+                jbBajaLogicaMateria.setEnabled(false);
+                
+                limpiarCampos();
+                cargarMaterias();
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "La materia ya esta inactiva.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontro una materia con este nombre.");
+        } 
+            } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un nombre valido.");
+            }                         
+    }//GEN-LAST:event_jbBajaLogicaMateriaActionPerformed
+
+    private void jbEliminarMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarMateriaActionPerformed
+        try {
+            String nombreMateria = jtfNombreMateria.getText();
+            mat.eliminarMateria(nombreMateria);
+            JOptionPane.showMessageDialog(this, "Materia eliminada");
+        
+           jbInsertarMateria.setEnabled(false);
+           jbActualizarMaterias.setEnabled(false);
+           jbEliminarMateria.setEnabled(false);
+           jbAltaLogicaMateria.setEnabled(false);
+           jbBajaLogicaMateria.setEnabled(false);
+           
+        limpiarCampos();
+        cargarMaterias();
+        
+       } catch (HeadlessException | NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
+       }
+    }//GEN-LAST:event_jbEliminarMateriaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -217,4 +387,34 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jtfAño;
     private javax.swing.JTextField jtfNombreMateria;
     // End of variables declaration//GEN-END:variables
+    
+    private void cargarMaterias() {
+        
+    modelo.setRowCount(0);
+    
+    List<Materia> materias = mat.verMaterias();
+
+    for (Materia m : materias) {
+        modelo.addRow(new Object[]{
+
+            m.getNombreMateria(),
+            m.getAnioMateria(),
+            m.isEstadoMateria()? "Activo" : "Inactivo"
+        });
+    }
+    }
+    
+    private void limpiarCampos() {
+    jtfNombreMateria.setText("");
+    jtfAño.setText("");
+    jcbEstadoMateria.setSelectedIndex(0);
+}
+    
+    private void armarCabecera() {
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Año");
+        modelo.addColumn("Estado");
+        jtMaterias.setModel(modelo);
+    }
 }

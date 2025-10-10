@@ -6,11 +6,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 public class materiaData {
 
-    private final Connection con;
+    private Connection con = null;
 
     public materiaData(Connection con) {
         this.con = con;
@@ -32,8 +34,9 @@ public class materiaData {
                 JOptionPane.showMessageDialog(null, "Error de conexión: " + ex.getMessage());
         }
     }
-    public void buscarMateria(String nombreMateria){
+    public Materia buscarMateria(String nombreMateria){
         String sql = "SELECT * FROM materia WHERE nombreMateria = ?";
+        Materia materia = null;
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -42,8 +45,8 @@ public class materiaData {
             ResultSet resultado = ps.executeQuery();
             
             if (resultado.next()){
-                Materia materia = new Materia();
-                System.out.println("ID:" + resultado.getInt("idMateria"));
+                materia = new Materia();
+                System.out.println("Id:" + resultado.getInt("idMateria"));
                 System.out.println("Nombre:" + resultado.getString("nombreMateria"));
                 System.out.println("Anio:" + resultado.getInt("anioMateria"));
                 System.out.println("Estado:" + resultado.getBoolean("estadoMateria"));
@@ -54,8 +57,10 @@ public class materiaData {
         }catch (SQLException ex){
             JOptionPane.showMessageDialog(null, "Error de conexion: " + ex.getMessage());
         }
+        return materia;
     }
-    public void verMaterias(){
+    public List <Materia> verMaterias(){
+        List <Materia> materias = new ArrayList();
         String sql = "SELECT * FROM materia";
         
         try{
@@ -63,26 +68,30 @@ public class materiaData {
             ResultSet resultado = ps.executeQuery();
             
             while (resultado.next()){
-                System.out.println("ID:" + resultado.getInt("idMateria"));
-                System.out.println("Nombre:" + resultado.getString("nombreMateria"));
-                System.out.println("Anio:" + resultado.getInt("anioMateria"));
-                System.out.println("Estado:" + resultado.getBoolean("estadoMateria"));
+                Materia m = new Materia ();
+                m.setNombreMateria(resultado.getString("nombreMateria"));
+                m.setAnioMateria(resultado.getInt("anioMateria"));
+                m.setEstadoMateria(resultado.getBoolean("estadoMateria"));
+                materias.add(m);
             }
             resultado.close();
             ps.close();
+            
         } catch (SQLException ex){
             JOptionPane.showMessageDialog(null,"Error de conexion: " + ex.getMessage());
         }
+        return materias;
     }
-    public void actualizarMateria(String nombreMateria, String nombreMateriaActualizada, int anioMateriaActualizado){
-        String sql = "UPDATE materia SET nombreMateria = ? , anioMateria = ? WHERE nombreMateria = ?";
+    public void actualizarMateria(Materia m){
+        String sql = "UPDATE materia SET nombreMateria = ? , anioMateria = ? , estadoMateria = ?, WHERE nombreMateria = ?";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             
-            ps.setString(1, nombreMateriaActualizada);
-            ps.setInt(2,anioMateriaActualizado);
-            ps.setString(3, nombreMateria);
+            ps.setString(1, m.getNombreMateria());
+            ps.setInt(2, m.getAnioMateria());
+            ps.setBoolean(3, m.isEstadoMateria());
+            ps.setString(4, m.getNombreMateria());
             
             int registros = ps.executeUpdate();
             
@@ -110,7 +119,7 @@ public class materiaData {
         }
     }
     public void bajaLogicaMateria(String nombreMateria){
-        String sql = "UPDATE materia SET estadoMateria = 0 WHERE nombreMateria = ?";
+        String sql = "UPDATE materia SET estadoMateria = 0, WHERE nombreMateria = ?";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -131,7 +140,7 @@ public class materiaData {
         }
     }
     public void altaLogicaMateria(String nombreMateria){
-        String sql = "UPDATE materia SET estadoMateria = 1 WHERE nombreMateria = ?";
+        String sql = "UPDATE materia SET estadoMateria = 1 , WHERE nombreMateria = ?";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);

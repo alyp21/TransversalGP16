@@ -6,7 +6,6 @@ import Modelo.Conexion;
 import Persistencia.alumnoData;
 import java.awt.HeadlessException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -16,7 +15,7 @@ import org.mariadb.jdbc.Connection;
 
 public class VistaAlumno extends javax.swing.JInternalFrame {
 
-   DefaultTableModel modeloTabla; 
+   DefaultTableModel modeloTabla;
    private Connection con;
    private alumnoData alum;
    
@@ -278,18 +277,14 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     
     
     private void jbVerAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbVerAlumnosActionPerformed
-        // TODO add your handling code here:
-        borrarFilas();
-        for (Alumno a : alum.verAlumnos()) {
-        modeloTabla.addRow(new Object[]{
-            a.getDni(),
-            a.getApellido(),
-            a.getNombre(),
-            a.getFechaNacimiento(),
-            a.isEstado() ? "Activo" : "Inactivo"
-        });
-    }
-
+        
+        cargarAlumnos();
+        
+           jbInsertarAlumno.setEnabled(true);
+           jbActualizarAlumnos.setEnabled(true);
+           jbEliminarAlumnos.setEnabled(true);
+           jbAltaLogicaAlumno.setEnabled(true);
+           jbBajaLogicaAlumno.setEnabled(true);
     }//GEN-LAST:event_jbVerAlumnosActionPerformed
 
     private void jbInsertarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbInsertarAlumnoActionPerformed
@@ -323,6 +318,13 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         int dni = Integer.parseInt(jtfDni.getText());
         alum.eliminarAlumno(dni);
         JOptionPane.showMessageDialog(this, "Alumno eliminado");
+        
+           jbInsertarAlumno.setEnabled(false);
+           jbActualizarAlumnos.setEnabled(false);
+           jbEliminarAlumnos.setEnabled(false);
+           jbAltaLogicaAlumno.setEnabled(false);
+           jbBajaLogicaAlumno.setEnabled(false);
+           
         limpiarCampos();
         cargarAlumnos();
         
@@ -337,11 +339,20 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         Alumno a = alum.buscarAlumno(dni);
 
         if (a != null) {
-            if (!a.isEstado()) {  // Solo si está inactivo
+            if (!a.isEstado()) {
                 alum.altaLogica(dni);
                 a.setEstado(true);
                 jcbEstadoAlumno.setSelectedItem("Activo");
                 JOptionPane.showMessageDialog(this, "Alumno dado de alta correctamente.");
+                
+                jbInsertarAlumno.setEnabled(false);
+                jbActualizarAlumnos.setEnabled(false);
+                jbEliminarAlumnos.setEnabled(false);
+                jbAltaLogicaAlumno.setEnabled(false);
+                jbBajaLogicaAlumno.setEnabled(false);
+                
+                limpiarCampos();
+                cargarAlumnos();
             } else {
                 JOptionPane.showMessageDialog(this, "El alumno ya esta activo.");
             }
@@ -364,19 +375,29 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                 a.setEstado(false);
                 jcbEstadoAlumno.setSelectedItem("Inactivo");
                 JOptionPane.showMessageDialog(this, "Alumno dado de baja correctamente.");
+                
+                jbInsertarAlumno.setEnabled(false);
+                jbActualizarAlumnos.setEnabled(false);
+                jbEliminarAlumnos.setEnabled(false);
+                jbAltaLogicaAlumno.setEnabled(false);
+                jbBajaLogicaAlumno.setEnabled(false);
+                
+                limpiarCampos();
+                cargarAlumnos();
             } else {
                 JOptionPane.showMessageDialog(this, "El alumno ya esta inactivo.");
             }
         } else {
             JOptionPane.showMessageDialog(this, "No se encontro un alumno con ese DNI.");
-        }
-    } catch (NumberFormatException e) {
+        } 
+            } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "Debe ingresar un DNI valido.");
-    }
+        }
     }//GEN-LAST:event_jbBajaLogicaAlumnoActionPerformed
 
     private void jbActualizarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActualizarAlumnosActionPerformed
         try {
+            
             int dni = Integer.parseInt(jtfDni.getText());
             String apellido = jtfApellido.getText();
             String nombre = jtfNombreAlumno.getText();
@@ -386,8 +407,18 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             a.setDni(dni);
             a.setApellido(apellido);
             a.setNombre(nombre);
+            a.setFechaNacimiento(LocalDate.parse(jtfFechaNacimiento.getText()));
             a.setEstado(estado);
             alum.actualizarAlumno(a);
+            
+            jbInsertarAlumno.setEnabled(false);
+            jbActualizarAlumnos.setEnabled(false);
+            jbEliminarAlumnos.setEnabled(false);
+            jbAltaLogicaAlumno.setEnabled(false);
+            jbBajaLogicaAlumno.setEnabled(false);
+            
+            limpiarCampos();
+            cargarAlumnos();
             
         } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "No se encontro ningun alumno con este dni.");
@@ -427,7 +458,9 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
     
     private void cargarAlumnos() {
+        
     modeloTabla.setRowCount(0);
+    
     List<Alumno> lista = alum.verAlumnos();
 
     for (Alumno a : lista) {
@@ -447,12 +480,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     jtfFechaNacimiento.setText("");
     jcbEstadoAlumno.setSelectedIndex(0);
 }
-    private void borrarFilas() {
-        int filas = modeloTabla.getRowCount() - 1;
-        for (int i = filas; i >= 0; i--) {
-        modeloTabla.removeRow(i);
-    }
-}
+    
     private void armarCabeceraTabla() {
         modeloTabla = new DefaultTableModel();
         modeloTabla.addColumn("Dni");
