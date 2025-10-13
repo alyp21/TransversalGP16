@@ -83,7 +83,7 @@ public class materiaData {
         return materias;
     }
     public void actualizarMateria(Materia m){
-        String sql = "UPDATE materia SET nombreMateria = ? , anioMateria = ? , estadoMateria = ?, WHERE nombreMateria = ?";
+        String sql = "UPDATE materia SET nombreMateria = ? , anioMateria = ? , estadoMateria = ? WHERE nombreMateria = ?";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
