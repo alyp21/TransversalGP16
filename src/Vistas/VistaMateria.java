@@ -289,8 +289,6 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     private void jbActualizarMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActualizarMateriasActionPerformed
             
         try {
-            
-            
             String nombre = jtfNombreMateria.getText();
             int anio = Integer.parseInt(jtfAño.getText());
             boolean estado = jcbEstadoMateria.getSelectedItem().equals("Activo");

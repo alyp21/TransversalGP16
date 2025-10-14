@@ -93,7 +93,7 @@ public class alumnoData {
        return alumnos;
     }
     public void actualizarAlumno(Alumno a){
-        String sql = "UPDATE alumno SET apellido = ? , nombre = ?, fechaNacimiento = ?, estado = ? WHERE dni = ?";
+        String sql = "UPDATE alumno SET apellido = ? , nombre = ?, fechaNacimiento = ?, estado = ? WHERE dni= ?";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
