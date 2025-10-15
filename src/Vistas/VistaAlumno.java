@@ -2,7 +2,7 @@
 package Vistas;
 
 import Modelo.Alumno;
-import Modelo.Conexion;
+import Persistencia.Conexion;
 import Persistencia.alumnoData;
 import java.awt.HeadlessException;
 import java.time.LocalDate;

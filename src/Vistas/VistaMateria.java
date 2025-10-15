@@ -1,7 +1,7 @@
 
 package Vistas;
 
-import Modelo.Conexion;
+import Persistencia.Conexion;
 import Modelo.Materia;
 import Persistencia.materiaData;
 import java.awt.HeadlessException;

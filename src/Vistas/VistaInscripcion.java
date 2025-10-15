@@ -1,20 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
+
 package Vistas;
 
-/**
- *
- * @author Usuario
- */
+import java.util.Objects;
+import Persistencia.Conexion;
+import Persistencia.inscripcionData;
+import javax.swing.table.DefaultTableModel;
+import org.mariadb.jdbc.Connection;
+
+
 public class VistaInscripcion extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form VistaInscripcion
-     */
+    private Connection con;
+    private inscripcionData ins;
+    DefaultTableModel modelo;
+    
     public VistaInscripcion() {
         initComponents();
+        con = (Connection) Conexion.getConexion();
+        ins = new inscripcionData(con);
+        armarCabeceraTabla();
     }
 
     /**
@@ -26,17 +30,26 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtInscripcion = new javax.swing.JTable();
         jBInscribir = new javax.swing.JButton();
         jBInscripcion = new javax.swing.JButton();
         inscriptas = new javax.swing.JRadioButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jAlumnos = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jRBNoinscriptas = new javax.swing.JRadioButton();
+        jbSalir = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        setClosable(true);
+
+        jtInscripcion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -47,51 +60,60 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
                 "ID", "Nombre"
             }
         ));
-        jTable1.setToolTipText("");
-        jScrollPane1.setViewportView(jTable1);
+        jtInscripcion.setToolTipText("");
+        jScrollPane1.setViewportView(jtInscripcion);
 
         jBInscribir.setText("Inscribir");
 
         jBInscripcion.setText("Anular Inscripcion");
 
         inscriptas.setText("materias inscriptas");
+        inscriptas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inscriptasActionPerformed(evt);
+            }
+        });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jAlumnos.setText("Alumnos");
+        jAlumnos.setText("Alumno");
 
         jLabel1.setText("LISTADO DE MATERIAS");
 
         jRBNoinscriptas.setText("No Inscriptas");
+
+        jbSalir.setText("Salir");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(182, 182, 182))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(83, 83, 83)
+                        .addGap(114, 114, 114)
                         .addComponent(inscriptas, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(60, 60, 60)
                         .addComponent(jRBNoinscriptas))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jBInscribir, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jBInscripcion))
+                        .addGap(114, 114, 114)
+                        .addComponent(jAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(135, 135, 135)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(54, Short.MAX_VALUE))
+                        .addGap(202, 202, 202)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jBInscribir, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jBInscripcion)
+                                .addGap(176, 176, 176)
+                                .addComponent(jbSalir)))))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,21 +124,26 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inscriptas)
                     .addComponent(jRBNoinscriptas))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBInscribir)
-                    .addComponent(jBInscripcion))
-                .addGap(75, 75, 75))
+                    .addComponent(jBInscripcion)
+                    .addComponent(jbSalir))
+                .addGap(34, 34, 34))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void inscriptasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inscriptasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inscriptasActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -125,9 +152,19 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     private javax.swing.JButton jBInscribir;
     private javax.swing.JButton jBInscripcion;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JRadioButton jRBNoinscriptas;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbSalir;
+    private javax.swing.JTable jtInscripcion;
     // End of variables declaration//GEN-END:variables
+
+    private void armarCabeceraTabla() {
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Id");
+        modelo.addColumn("Nombre");
+        jtInscripcion.setModel(modelo);
+    }
 }

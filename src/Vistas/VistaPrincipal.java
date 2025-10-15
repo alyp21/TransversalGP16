@@ -31,14 +31,27 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenu1 = new javax.swing.JMenu();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         Escritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         jmAlumnos = new javax.swing.JMenuItem();
         jmMaterias = new javax.swing.JMenuItem();
+        jmIncribirAlumno = new javax.swing.JMenuItem();
+        jmInscripciones = new javax.swing.JMenuItem();
+        jmCargarNotas = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
+
+        jMenuItem1.setText("jMenuItem1");
+
+        jMenuItem4.setText("jMenuItem4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,6 +87,30 @@ public class VistaPrincipal extends javax.swing.JFrame {
         });
         jMenu3.add(jmMaterias);
 
+        jmIncribirAlumno.setText("Inscribir un Alumno");
+        jmIncribirAlumno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmIncribirAlumnoActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jmIncribirAlumno);
+
+        jmInscripciones.setText("Inscripciones");
+        jmInscripciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmInscripcionesActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jmInscripciones);
+
+        jmCargarNotas.setText("Cargar Notas");
+        jmCargarNotas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmCargarNotasActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jmCargarNotas);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -103,6 +140,24 @@ public class VistaPrincipal extends javax.swing.JFrame {
         Escritorio.add(materia);
         materia.setVisible(true);
     }//GEN-LAST:event_jmMateriasActionPerformed
+
+    private void jmIncribirAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmIncribirAlumnoActionPerformed
+        VistaInscripcion inscripcion = new VistaInscripcion();
+        Escritorio.add(inscripcion);
+        inscripcion.setVisible(true);
+    }//GEN-LAST:event_jmIncribirAlumnoActionPerformed
+
+    private void jmInscripcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmInscripcionesActionPerformed
+        VistaListarInscripciones inscripciones = new VistaListarInscripciones();
+        Escritorio.add(inscripciones);
+        inscripciones.setVisible(true);
+    }//GEN-LAST:event_jmInscripcionesActionPerformed
+
+    private void jmCargarNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmCargarNotasActionPerformed
+        VistaCargaNotas cargaNotas = new VistaCargaNotas();
+        Escritorio.add(cargaNotas);
+        cargaNotas.setVisible(true);
+    }//GEN-LAST:event_jmCargarNotasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -141,11 +196,17 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane Escritorio;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jmAlumnos;
+    private javax.swing.JMenuItem jmCargarNotas;
+    private javax.swing.JMenuItem jmIncribirAlumno;
+    private javax.swing.JMenuItem jmInscripciones;
     private javax.swing.JMenuItem jmMaterias;
     // End of variables declaration//GEN-END:variables
 }

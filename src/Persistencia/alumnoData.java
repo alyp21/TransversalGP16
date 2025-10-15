@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 public class alumnoData {
     
-     public alumnoData() {
+    public alumnoData() {
         
     }
     
