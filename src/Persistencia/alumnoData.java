@@ -167,4 +167,4 @@ public class alumnoData {
             JOptionPane.showMessageDialog(null, "Error de conexion: " + ex.getMessage());
         }
     }
-}
+    }
