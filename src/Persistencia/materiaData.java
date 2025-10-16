@@ -16,7 +16,9 @@ public class materiaData {
 
     public materiaData(Connection con) {
         this.con = con;
-        
+    }
+
+    public materiaData() {
     }
     
     public void guardarMateria(Materia materia){

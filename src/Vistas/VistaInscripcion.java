@@ -51,13 +51,13 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
 
         jtInscripcion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "ID", "Nombre"
+                "ID", "Nombre", "Año"
             }
         ));
         jtInscripcion.setToolTipText("");
@@ -67,7 +67,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
 
         jBInscripcion.setText("Anular Inscripcion");
 
-        inscriptas.setText("materias inscriptas");
+        inscriptas.setText("Materias inscriptas");
         inscriptas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inscriptasActionPerformed(evt);
@@ -81,8 +81,6 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         jRBNoinscriptas.setText("No Inscriptas");
 
         jbSalir.setText("Salir");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

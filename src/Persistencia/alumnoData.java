@@ -12,12 +12,10 @@ import javax.swing.JOptionPane;
 public class alumnoData {
     
     public alumnoData() {
-        
     }
     
     private Connection con = null;
    
-    
     public alumnoData(Connection con) {
         this.con = con;
     }
@@ -161,7 +159,6 @@ public class alumnoData {
                 System.out.println("El alumno fue dado de alta con exito. Registros actualizados: " + registros);
         } else {
                 System.out.println("No se encontró un alumno con ese DNI.");
-        
             }
         } catch (SQLException ex){
             JOptionPane.showMessageDialog(null, "Error de conexion: " + ex.getMessage());
