@@ -448,18 +448,24 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
         try{
             Integer dni= Integer.parseInt(jtfDni.getText());
-            boolean estado= jcbEstadoAlumno.getSelectedItem().equals("Activo");
             alumnoActual= alum.buscarAlumnoPorDni(dni);
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            
             
             if(alumnoActual!=null){
                 jtfApellido.setText(alumnoActual.getApellido());
                 jtfNombreAlumno.setText(alumnoActual.getNombre());
-                jcbEstadoAlumno.setSelectedItem(estado);
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
                 jtfFechaNacimiento.setText(alumnoActual.getFechaNacimiento().format(formato));
+                if (alumnoActual.isEstado()){
+                    jcbEstadoAlumno.setSelectedItem("Activo");
+                } else {
+                    jcbEstadoAlumno.setSelectedItem("Inactivo");
+                }
+        } else {
+                JOptionPane.showMessageDialog(this, "No se encontro ningun alumno con este dni.");
             }
         }catch(NumberFormatException ex){
-            JOptionPane.showMessageDialog(this, "Debe ingresar un numero valido");
+            JOptionPane.showMessageDialog(this, "Debe ingresar un numero valido.");
         }
     }//GEN-LAST:event_jbBuscarActionPerformed
 
