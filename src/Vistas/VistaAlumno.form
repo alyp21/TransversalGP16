@@ -74,7 +74,7 @@
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="24" max="32767" attributes="0"/>
+              <EmptySpace pref="30" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -144,7 +144,7 @@
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                           <Component id="jbBuscar" min="-2" pref="82" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -163,16 +163,17 @@
                               <Component id="jtfDni" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jbBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jlApellido" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jtfApellido" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jlNombreAlumno" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jtfNombreAlumno" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jlNombreAlumno" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
@@ -185,7 +186,6 @@
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jlFechaNacimiento" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jtfFechaNacimiento" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -198,7 +198,6 @@
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jbBajaLogicaAlumno" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jbActualizarAlumnos" alignment="3" min="-2" max="-2" attributes="0"/>

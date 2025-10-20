@@ -90,7 +90,7 @@ public class InscripcionData {
             while(rs.next()){
                 Inscripcion insc= new Inscripcion();
                 insc.setIdInscripcion(rs.getInt("idInscripto"));
-                Alumno alu=alum.buscarAlumno(rs.getInt("idInscripto"));
+                Alumno alu=alum.buscarAlumnoPorDni(rs.getInt("idInscripto"));
                 Materia mat=md.buscarMateria("idMateria");
                 insc.setAlumno(alu);
                 insc.setMateria(mat);
@@ -113,7 +113,7 @@ public class InscripcionData {
             while(rs.next()){
                 Inscripcion insc= new Inscripcion();
                 insc.setIdInscripcion(rs.getInt("idInscripto"));
-                Alumno alu=alum.buscarAlumno(rs.getInt("idInscripto"));
+                Alumno alu=alum.buscarAlumnoPorDni(rs.getInt("idInscripto"));
                 Materia mat=md.buscarMateria("idMateria");
                 insc.setAlumno(alu);
                 insc.setMateria(mat);
@@ -150,8 +150,8 @@ public class InscripcionData {
     }
     public List<Materia> obtenerMateriasNoCursadas(int idAlumno){
         ArrayList<Materia> materias=new ArrayList<>();
-        String sql= "SELECT * FROM materia WHERE estado= 1 AND idMateria not in"
-                +"SELECT idMateria FROM inscripcion WHERE idAlumno= ?";
+        String sql= "SELECT * FROM materia WHERE estado= 1 AND idMateria not in "
+                +" SELECT idMateria FROM inscripcion WHERE idAlumno= ?";
         try {
             PreparedStatement ps=con.prepareStatement(sql);
             ps.setInt(1, idAlumno);

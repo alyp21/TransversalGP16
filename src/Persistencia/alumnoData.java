@@ -37,10 +37,9 @@ public class AlumnoData {
                 JOptionPane.showMessageDialog(null, "Error de conexión: " + ex.getMessage());
         }
     }
-    
     public Alumno buscarAlumno(int id){
         Alumno alumno= null;
-        String sql = "SELECT * FROM alumno WHERE dni = ?";
+        String sql = "SELECT dni, apellido, nombre, fechaNacimiento FROM alumno WHERE idAlumno = ? AND estado= 1";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -50,6 +49,32 @@ public class AlumnoData {
             if (resultado.next()){
                 alumno = new Alumno();
                 alumno.setId(id);
+                alumno.setDni(resultado.getInt("dni"));
+                alumno.setApellido(resultado.getString("apellido"));
+                alumno.setNombre(resultado.getString("nombre"));
+                alumno.setFechaNacimiento(resultado.getDate("fechaNacimiento").toLocalDate());
+                alumno.setEstado(true);
+            }else {
+                JOptionPane.showMessageDialog(null,"No hay ningun alumno con este id");
+            }
+            resultado.close();
+        }catch (SQLException ex){
+            JOptionPane.showMessageDialog(null, "Error de conexion: " + ex.getMessage());
+        }
+        return alumno;
+    }
+    public Alumno buscarAlumnoPorDni(int dni){
+        Alumno alumno= null;
+        String sql = "SELECT idAlumno, dni, apellido, nombre, fechaNacimiento FROM alumno WHERE dni = ? AND estado= 1";
+        
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, dni);
+            ResultSet resultado = ps.executeQuery();
+            
+            if (resultado.next()){
+                alumno = new Alumno();
+                alumno.setId(resultado.getInt("idAlumno"));
                 alumno.setDni(resultado.getInt("dni"));
                 alumno.setApellido(resultado.getString("apellido"));
                 alumno.setNombre(resultado.getString("nombre"));

@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.mariadb.jdbc.Connection;
 
-
 public class VistaAlumno extends javax.swing.JInternalFrame {
 
    DefaultTableModel modeloTabla;
@@ -194,7 +193,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                             .addComponent(jbAltaLogicaAlumno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(20, 20, 20))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(29, 29, 29)
                         .addComponent(jbBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -208,14 +207,15 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                             .addComponent(jlDni)
                             .addComponent(jtfDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jbBuscar))
-                        .addGap(17, 17, 17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jlApellido)
                             .addComponent(jtfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(9, 9, 9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlNombreAlumno)
-                            .addComponent(jtfNombreAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jtfNombreAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jlNombreAlumno))
+                        .addGap(8, 8, 8))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(41, 41, 41)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -224,7 +224,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                         .addGap(12, 12, 12)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jlFechaNacimiento)
                             .addComponent(jtfFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -234,7 +233,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                             .addComponent(jcbEstadoAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jbBajaLogicaAlumno)
                             .addComponent(jbActualizarAlumnos))
@@ -294,7 +292,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -361,7 +359,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     private void jbAltaLogicaAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAltaLogicaAlumnoActionPerformed
         try {
         int dni = Integer.parseInt(jtfDni.getText());
-        Alumno a = alum.buscarAlumno(dni);
+        Alumno a = alum.buscarAlumnoPorDni(dni);
 
         if (a != null) {
             if (!a.isEstado()) {
@@ -392,7 +390,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     private void jbBajaLogicaAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBajaLogicaAlumnoActionPerformed
         try {
         int dni = Integer.parseInt(jtfDni.getText());
-        Alumno a = alum.buscarAlumno(dni);
+        Alumno a = alum.buscarAlumnoPorDni(dni);
 
         if (a != null) {
             if (a.isEstado()) {
@@ -457,12 +455,14 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
 //        try{
 //            Integer dni= Integer.parseInt(jtfDni.getText());
-//            alumnoActual= alum.buscarAlumno(dni);
+//            boolean estado= jcbEstadoAlumno.getSelectedItem().equals("Activo");
+//            alumnoActual= alum.buscarAlumnoPorDni(dni);
 //            
 //            if(alumnoActual!=null){
 //                jtfApellido.setText(alumnoActual.getApellido());
 //                jtfNombreAlumno.setText(alumnoActual.getNombre());
-//                
+//                jcbEstadoAlumno.setSelectedItem(estado);
+//                jtfFechaNacimiento.setDate(alumnoActual.getFechaNacimiento());
 //            }
 //        }
     }//GEN-LAST:event_jbBuscarActionPerformed
