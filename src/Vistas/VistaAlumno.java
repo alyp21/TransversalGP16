@@ -6,6 +6,7 @@ import Persistencia.Conexion;
 import Persistencia.AlumnoData;
 import java.awt.HeadlessException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -300,14 +301,13 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     
     
     private void jbVerAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbVerAlumnosActionPerformed
-        
         cargarAlumnos();
         
-           jbInsertarAlumno.setEnabled(true);
-           jbActualizarAlumnos.setEnabled(true);
-           jbEliminarAlumnos.setEnabled(true);
-           jbAltaLogicaAlumno.setEnabled(true);
-           jbBajaLogicaAlumno.setEnabled(true);
+        jbInsertarAlumno.setEnabled(true);
+        jbActualizarAlumnos.setEnabled(true);
+        jbEliminarAlumnos.setEnabled(true);
+        jbAltaLogicaAlumno.setEnabled(true);
+        jbBajaLogicaAlumno.setEnabled(true);
     }//GEN-LAST:event_jbVerAlumnosActionPerformed
 
     private void jbInsertarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbInsertarAlumnoActionPerformed
@@ -420,7 +420,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
     private void jbActualizarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActualizarAlumnosActionPerformed
         try {
-            
             int dni = Integer.parseInt(jtfDni.getText());
             String apellido = jtfApellido.getText();
             String nombre = jtfNombreAlumno.getText();
@@ -433,12 +432,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             a.setFechaNacimiento(LocalDate.parse(jtfFechaNacimiento.getText()));
             a.setEstado(estado);
             alum.actualizarAlumno(a);
-            
-            jbInsertarAlumno.setEnabled(false);
-            jbActualizarAlumnos.setEnabled(false);
-            jbEliminarAlumnos.setEnabled(false);
-            jbAltaLogicaAlumno.setEnabled(false);
-            jbBajaLogicaAlumno.setEnabled(false);
             
             limpiarCampos();
             cargarAlumnos();
@@ -453,18 +446,21 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jtfDniActionPerformed
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
-//        try{
-//            Integer dni= Integer.parseInt(jtfDni.getText());
-//            boolean estado= jcbEstadoAlumno.getSelectedItem().equals("Activo");
-//            alumnoActual= alum.buscarAlumnoPorDni(dni);
-//            
-//            if(alumnoActual!=null){
-//                jtfApellido.setText(alumnoActual.getApellido());
-//                jtfNombreAlumno.setText(alumnoActual.getNombre());
-//                jcbEstadoAlumno.setSelectedItem(estado);
-//                jtfFechaNacimiento.setDate(alumnoActual.getFechaNacimiento());
-//            }
-//        }
+        try{
+            Integer dni= Integer.parseInt(jtfDni.getText());
+            boolean estado= jcbEstadoAlumno.getSelectedItem().equals("Activo");
+            alumnoActual= alum.buscarAlumnoPorDni(dni);
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            
+            if(alumnoActual!=null){
+                jtfApellido.setText(alumnoActual.getApellido());
+                jtfNombreAlumno.setText(alumnoActual.getNombre());
+                jcbEstadoAlumno.setSelectedItem(estado);
+                jtfFechaNacimiento.setText(alumnoActual.getFechaNacimiento().format(formato));
+            }
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(this, "Debe ingresar un numero valido");
+        }
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jcbEstadoAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbEstadoAlumnoActionPerformed
