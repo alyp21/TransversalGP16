@@ -12,8 +12,8 @@
 //
 //public class VistaConsola {
 //
-////    esto lo probamos antes de hacer las vistas con el frame, queda por si acaso ;)
-////    todo funciona (o deberia)
+//   esto lo probamos antes de hacer las vistas con el frame, queda por si acaso ;)
+//    todo funciona (o deberia)
 //    
 //    public static void main(String[] args) {
 //        
@@ -90,7 +90,7 @@
 //                    nombre = sc.nextLine();
 //                    Alumno alumno1 = new Alumno (dni, nombre, apellido, fechaNacimiento, estado);
 //                    alumData.actualizarAlumno(alumno1);
-////                    break;
+//                   break;
 //                    
 //                case 5:
 //                    System.out.print("Ingresa el dni del alumno a eliminar: ");

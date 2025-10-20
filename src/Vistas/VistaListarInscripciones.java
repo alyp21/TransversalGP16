@@ -2,7 +2,7 @@
 package Vistas;
 
 import Persistencia.Conexion;
-import Persistencia.inscripcionData;
+import Persistencia.InscripcionData;
 import javax.swing.table.DefaultTableModel;
 import org.mariadb.jdbc.Connection;
 
@@ -10,13 +10,13 @@ import org.mariadb.jdbc.Connection;
 public class VistaListarInscripciones extends javax.swing.JInternalFrame {
 
     private Connection con;
-    private inscripcionData ins;
+    private InscripcionData ins;
     DefaultTableModel modelo;
     
     public VistaListarInscripciones() {
         initComponents();
         con = (Connection) Conexion.getConexion();
-        ins = new inscripcionData(con);
+        ins = new InscripcionData(con);
         armarCabeceraTabla();
     }
 
@@ -55,8 +55,6 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
         jlListarInscripciones.setText("Listar Inscripciones");
 
         jlSeleccionar.setText("Seleccione una materia:");
-
-        jcbMaterias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jtListarInscripciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
