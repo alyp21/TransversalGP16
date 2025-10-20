@@ -2,20 +2,20 @@
 package Vistas;
 
 import Persistencia.Conexion;
-import Persistencia.inscripcionData;
+import Persistencia.InscripcionData;
 import javax.swing.table.DefaultTableModel;
 import org.mariadb.jdbc.Connection;
 
 public class VistaCargaNotas extends javax.swing.JInternalFrame {
 
     private Connection con;
-    private inscripcionData ins;
+    private InscripcionData ins;
     DefaultTableModel modelo;
     
     public VistaCargaNotas() {
         initComponents();
         con= (Connection) Conexion.getConexion();
-        ins= new inscripcionData(con);
+        ins= new InscripcionData(con);
         armarCabeceraTabla();
     }
 
@@ -37,6 +37,7 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jcbAlumnos = new javax.swing.JComboBox<>();
 
+        setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jtCargaNotas.setModel(new javax.swing.table.DefaultTableModel(
@@ -55,6 +56,11 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
         jbGuardar.setText("Guardar");
 
         jbSalir.setText("Salir");
+        jbSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -130,6 +136,10 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
     private void jcbAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbAlumnosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jcbAlumnosActionPerformed
+
+    private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
+        dispose();
+    }//GEN-LAST:event_jbSalirActionPerformed
 
     /**
      * @param args the command line arguments

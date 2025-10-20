@@ -15,16 +15,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public class inscripcionData {
+public class InscripcionData {
 
-    public inscripcionData() {
+    public InscripcionData() {
     }
     
     private Connection con = null;
-    private materiaData md=new materiaData();
-    private alumnoData alum=new alumnoData();
+    private MateriaData md=new MateriaData();
+    private AlumnoData alum=new AlumnoData();
     
-    public inscripcionData(Connection con) {
+    public InscripcionData(Connection con) {
         this.con = con;
     }
     
@@ -130,8 +130,8 @@ public class inscripcionData {
         ArrayList<Materia> materias=new ArrayList<>();
         
         String sql= "SELECT inscripcion.idMateria, nombre, año FROM inscripcion,"
-                +"materia WHERE inscripcion.idMateria = materia.idMateria"
-                +"AND inscripcion.idAlumno = ?";
+                +"materia WHERE inscripcion.idMateria = materia.idMateria "
+                +" AND inscripcion.idAlumno = ?";
         try {
             PreparedStatement ps=con.prepareStatement(sql);
             ps.setInt(1, idAlumno);

@@ -3,7 +3,7 @@ package Vistas;
 
 import Persistencia.Conexion;
 import Modelo.Materia;
-import Persistencia.materiaData;
+import Persistencia.MateriaData;
 import java.awt.HeadlessException;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -15,16 +15,15 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 
     
     private Connection con;
-    private materiaData mat;
+    private MateriaData mat;
     DefaultTableModel modelo;
     
     public VistaMateria() {
         initComponents();
         con = (Connection) Conexion.getConexion();
-        mat = new materiaData(con);
+        mat = new MateriaData(con);
         armarCabecera();
         jcbEstadoMateria.setModel(new DefaultComboBoxModel<>(new String[] {"Activo", "Inactivo"}));
-        
     }
 
     /**

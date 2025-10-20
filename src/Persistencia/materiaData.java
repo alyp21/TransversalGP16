@@ -10,15 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class materiaData {
+public class MateriaData {
 
     private Connection con = null;
 
-    public materiaData(Connection con) {
+    public MateriaData(Connection con) {
         this.con = con;
     }
 
-    public materiaData() {
+    public MateriaData() {
     }
     
     public void guardarMateria(Materia materia){
