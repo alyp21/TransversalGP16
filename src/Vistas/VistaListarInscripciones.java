@@ -1,8 +1,12 @@
 
 package Vistas;
 
+import Modelo.Alumno;
+import Modelo.Materia;
 import Persistencia.Conexion;
 import Persistencia.InscripcioonData;
+import Persistencia.MateriaData;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import org.mariadb.jdbc.Connection;
 
@@ -11,13 +15,16 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
 
     private Connection con;
     private InscripcioonData ins;
+    private MateriaData mat;
     DefaultTableModel modelo;
     
     public VistaListarInscripciones() {
         initComponents();
         con = (Connection) Conexion.getConexion();
         ins = new InscripcioonData(con);
+        mat = new MateriaData(con);
         armarCabeceraTabla();
+        cargaMaterias();
     }
 
     /**
@@ -55,6 +62,12 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
         jlListarInscripciones.setText("Listar Inscripciones");
 
         jlSeleccionar.setText("Seleccione una materia:");
+
+        jcbMaterias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbMateriasActionPerformed(evt);
+            }
+        });
 
         jtListarInscripciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -117,13 +130,20 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jcbMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbMateriasActionPerformed
+        Materia materiaSeleccionada = (Materia) jcbMaterias.getSelectedItem();
+        if (materiaSeleccionada != null){
+            cargarAlumnosPorMateria(materiaSeleccionada);
+        }
+    }//GEN-LAST:event_jcbMateriasActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox<String> jcbMaterias;
+    private javax.swing.JComboBox<Materia> jcbMaterias;
     private javax.swing.JLabel jlListarInscripciones;
     private javax.swing.JLabel jlSeleccionar;
     private javax.swing.JTable jtListarInscripciones;
@@ -136,5 +156,33 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
         modelo.addColumn("Apellido");
         modelo.addColumn("Nombre");
         jtListarInscripciones.setModel(modelo);
+    }
+    
+    private void cargaMaterias(){
+        List <Materia> materias = mat.verMaterias();
+        for ( Materia m : materias){
+            jcbMaterias.addItem(m);
+        }
+    }
+    
+    private void borrarFilaTabla(){
+        int indice = modelo.getRowCount() -1;
+        
+        for (int i = indice; i>=0; i--){
+            modelo.removeRow(i);
+        }
+    }
+    
+    private void cargarAlumnosPorMateria(Materia materia){
+        borrarFilaTabla();
+        List <Alumno> alumnos = ins.obtenerAlumnosXMateria(materia.getIdMateria());
+        for(Alumno a : alumnos){
+            modelo.addRow(new Object[]{
+                a.getId(),
+                a.getDni(),
+                a.getApellido(),
+                a.getNombre()
+            });
+        }
     }
 }

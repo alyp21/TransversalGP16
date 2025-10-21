@@ -5,7 +5,6 @@ import Modelo.Alumno;
 import Modelo.Inscripcion;
 import Modelo.Materia;
 import Persistencia.AlumnooData;
-import java.util.Objects;
 import Persistencia.Conexion;
 import Persistencia.InscripcioonData;
 import Persistencia.MateriaData;
@@ -36,6 +35,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         
         ins = new InscripcioonData(con);
         armarCabeceraTabla();
+        cargaAlumnos();
     }
 
     /**
