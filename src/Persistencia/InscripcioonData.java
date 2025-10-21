@@ -49,7 +49,7 @@ public class InscripcioonData {
     }
     
     public void actualizarNota(int idAlumno, int idMateria, double nota){
-        String sql="UPDATE inscripcion SET nota = ? WHERE idAlumno= ? and idMateria ?";
+        String sql="UPDATE inscripcion SET nota = ? WHERE idAlumno= ? and idMateria = ?";
         try {
             PreparedStatement ps=con.prepareStatement(sql);
             ps.setDouble(1, nota);
@@ -73,7 +73,7 @@ public class InscripcioonData {
             
             int filas=ps.executeUpdate();
             if(filas>0){
-                JOptionPane.showMessageDialog(null, "Inscripcioin Borrada");
+                JOptionPane.showMessageDialog(null, "Inscripcion Borrada");
             }
             ps.close();
         } catch (SQLException ex) {
@@ -150,8 +150,8 @@ public class InscripcioonData {
     }
     public List<Materia> obtenerMateriasNoCursadas(int idAlumno){
         ArrayList<Materia> materias=new ArrayList<>();
-        String sql= "SELECT * FROM materia WHERE estado= 1 AND idMateria not in "
-                +" SELECT idMateria FROM inscripcion WHERE idAlumno= ?";
+        String sql= "SELECT * FROM materia WHERE estado= 1 AND idMateria NOT IN "
+                +" (SELECT idMateria FROM inscripcion WHERE idAlumno= ?)";
         try {
             PreparedStatement ps=con.prepareStatement(sql);
             ps.setInt(1, idAlumno);
@@ -171,9 +171,10 @@ public class InscripcioonData {
     public List<Alumno> obtenerAlumnosXMateria(int idMateria){
         ArrayList<Alumno> alumnosMateria= new ArrayList<>();
         String sql= "SELECT a.idAlumno, dni, nombre, apellido, fechaNacimiento, estado"+
-                "FROM inscripcion i, alumno a WHERE i.idAlumno = a.idAlumno AND idMateria = ?";
+                "FROM inscripcion i, alumno a"
+                + " WHERE i.idAlumno = a.idAlumno AND idMateria = ?";
         try {
-            PreparedStatement ps=con.prepareCall(sql);
+            PreparedStatement ps=con.prepareStatement(sql);
             ps.setInt(1, idMateria);
             
             ResultSet rs=ps.executeQuery();
