@@ -3,7 +3,7 @@ package Vistas;
 
 import Modelo.Alumno;
 import Persistencia.Conexion;
-import Persistencia.AlumnoData;
+import Persistencia.AlumnooData;
 import java.awt.HeadlessException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,13 +17,13 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
    DefaultTableModel modeloTabla;
    private Connection con;
-   private AlumnoData alum;
+   private AlumnooData alum;
    private Alumno alumnoActual=null;
    
     public  VistaAlumno() {
         initComponents();
         con= (Connection) Conexion.getConexion();
-        alum= new AlumnoData(con);
+        alum= new AlumnooData(con);
         armarCabeceraTabla();
         jcbEstadoAlumno.setModel(new DefaultComboBoxModel<>(new String[] {"Activo", "Inactivo"}));
     }

@@ -4,10 +4,10 @@ package Vistas;
 import Modelo.Alumno;
 import Modelo.Inscripcion;
 import Modelo.Materia;
-import Persistencia.AlumnoData;
+import Persistencia.AlumnooData;
 import java.util.Objects;
 import Persistencia.Conexion;
-import Persistencia.InscripcionData;
+import Persistencia.InscripcioonData;
 import Persistencia.MateriaData;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,19 +22,19 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     private List<Materia> listaM;
     private List<Alumno> listaA;
     
-    private InscripcionData ins;
+    private InscripcioonData ins;
     private MateriaData mData;
-    private AlumnoData aData;
+    private AlumnooData aData;
     DefaultTableModel modelo;
     
     public VistaInscripcion() {
         initComponents();
         con = (Connection) Conexion.getConexion();
-        aData = new AlumnoData();
+        aData = new AlumnooData();
         listaA = aData.verAlumnos();
         modelo = new DefaultTableModel();
         
-        ins = new InscripcionData(con);
+        ins = new InscripcioonData(con);
         armarCabeceraTabla();
     }
 

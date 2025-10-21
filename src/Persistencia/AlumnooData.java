@@ -1,3 +1,4 @@
+
 package Persistencia;
 
 import Modelo.Alumno;
@@ -9,14 +10,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-public class AlumnoData {
+public class AlumnooData {
     
-    public AlumnoData() {
+    public AlumnooData() {
     }
     
     private Connection con = null;
    
-    public AlumnoData(Connection con) {
+    public AlumnooData(Connection con) {
         this.con = con;
     }
     
@@ -34,7 +35,7 @@ public class AlumnoData {
                 int registros = ps.executeUpdate();
                 System.out.println("Alumno cargado correctamente. Registros insertados: " + registros);
             }catch(SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Error de conexión: " + ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Error de conexi贸n: " + ex.getMessage());
         }
     }
     public Alumno buscarAlumno(int id){
@@ -133,7 +134,7 @@ public class AlumnoData {
             if (registros > 0) {
                 System.out.println("El alumno fue actualizado con exito. Registros actualizados: " + registros);
         } else {
-                System.out.println("No se encontró un alumno con ese DNI.");
+                System.out.println("No se encontr贸 un alumno con ese DNI.");
         }
             
         } catch (SQLException ex){
@@ -167,7 +168,7 @@ public class AlumnoData {
             if (registros > 0) {
                 System.out.println("El alumno fue dado de baja con exito. Registros actualizados: " + registros);
         } else {
-                System.out.println("No se encontró un alumno con ese DNI.");
+                System.out.println("No se encontr贸 un alumno con ese DNI.");
         
             }
         } catch (SQLException ex){
@@ -187,10 +188,10 @@ public class AlumnoData {
             if (registros > 0) {
                 System.out.println("El alumno fue dado de alta con exito. Registros actualizados: " + registros);
         } else {
-                System.out.println("No se encontró un alumno con ese DNI.");
+                System.out.println("No se encontr贸 un alumno con ese DNI.");
             }
         } catch (SQLException ex){
             JOptionPane.showMessageDialog(null, "Error de conexion: " + ex.getMessage());
         }
     }
-    }
+}

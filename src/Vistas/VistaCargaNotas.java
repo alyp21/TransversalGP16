@@ -2,20 +2,20 @@
 package Vistas;
 
 import Persistencia.Conexion;
-import Persistencia.InscripcionData;
+import Persistencia.InscripcioonData;
 import javax.swing.table.DefaultTableModel;
 import org.mariadb.jdbc.Connection;
 
 public class VistaCargaNotas extends javax.swing.JInternalFrame {
 
     private Connection con;
-    private InscripcionData ins;
+    private InscripcioonData ins;
     DefaultTableModel modelo;
     
     public VistaCargaNotas() {
         initComponents();
         con= (Connection) Conexion.getConexion();
-        ins= new InscripcionData(con);
+        ins= new InscripcioonData(con);
         armarCabeceraTabla();
     }
 

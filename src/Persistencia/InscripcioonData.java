@@ -15,16 +15,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public class InscripcionData {
-
-    public InscripcionData() {
+public class InscripcioonData {
+    
+    public InscripcioonData() {
     }
     
     private Connection con = null;
     private MateriaData md=new MateriaData();
-    private AlumnoData alum=new AlumnoData();
+    private AlumnooData alum=new AlumnooData();
     
-    public InscripcionData(Connection con) {
+    public InscripcioonData(Connection con) {
         this.con = con;
     }
     
