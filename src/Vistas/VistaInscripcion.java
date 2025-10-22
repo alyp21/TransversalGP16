@@ -195,7 +195,8 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
 
     private void jbInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbInscribirActionPerformed
         int filaSeleccionada= jtMaterias.getSelectedRow();
-        if(filaSeleccionada!=-1){
+        if(filaSeleccionada != -1){
+            int id = Integer.parseInt(jcbAlumno.getSelectedItem().toString());
             Alumno a= (Alumno) jcbAlumno.getSelectedItem();
             
             int idMateria=(Integer) modelo.getValueAt(filaSeleccionada, 0);

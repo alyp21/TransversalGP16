@@ -33,6 +33,18 @@ public class InscripcioonData {
         
         try {
             PreparedStatement ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            if (insc.getAlumno() == null || insc.getMateria() == null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un alumno y una materia antes de inscribir.");
+            return;
+        }
+        if (insc.getAlumno().getId()<= 0) {
+            JOptionPane.showMessageDialog(null, "El alumno no está registrado en la base de datos.");
+            return;
+        }
+        if (insc.getMateria().getIdMateria() <= 0) {
+            JOptionPane.showMessageDialog(null, "La materia no está registrada en la base de datos.");
+            return;
+        }
             ps.setInt(1, insc.getAlumno().getId());
             ps.setInt(2, insc.getMateria().getIdMateria());
             ps.setDouble(3,insc.getNota());
@@ -94,7 +106,7 @@ public class InscripcioonData {
             while(rs.next()){
                 Inscripcion insc= new Inscripcion();
                 insc.setIdInscripcion(rs.getInt("idInscripto"));
-                Alumno alu=alum.buscarAlumnoPorDni(rs.getInt("idInscripto"));
+                Alumno alu=alum.buscarAlumno(rs.getInt("idInscripto"));
                 Materia mat=md.buscarMateria("idMateria");
                 insc.setAlumno(alu);
                 insc.setMateria(mat);
