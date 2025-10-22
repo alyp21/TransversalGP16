@@ -15,10 +15,11 @@ import javax.swing.JOptionPane;
 
 public class InscripcioonData {
     
+    private Connection con = null;
+    
     public InscripcioonData() {
     }
     
-    private Connection con = null;
     private MateriaData md =new MateriaData();
     private AlumnooData alum =new AlumnooData();
     
@@ -132,9 +133,11 @@ public class InscripcioonData {
     public List<Materia> obtenerMateriasCursadas(int idAlumno){
         ArrayList<Materia> materias=new ArrayList<>();
         
-        String sql= "SELECT inscripcion.idMateria, nombre, año FROM inscripcion,"
-                +"materia WHERE inscripcion.idMateria = materia.idMateria "
-                +" AND inscripcion.idAlumno = ?";
+        String sql= "SELECT inscripcion.idMateria, nombreMateria, anioMateria "
+        + "FROM inscripcion, materia "
+        + "WHERE inscripcion.idMateria = materia.idMateria "
+        + "AND inscripcion.idAlumno = ?";
+
         try {
             PreparedStatement ps=con.prepareStatement(sql);
             ps.setInt(1, idAlumno);
@@ -142,8 +145,8 @@ public class InscripcioonData {
             while(rs.next()){
                 Materia materia= new Materia();
                 materia.setIdMateria(rs.getInt("idMateria"));
-                materia.setNombreMateria(rs.getString("nombre"));
-                materia.setAnioMateria(rs.getInt("año"));
+                materia.setNombreMateria(rs.getString("nombreMateria"));
+                materia.setAnioMateria(rs.getInt("anioMateria"));
                 materias.add(materia);
             }
         } catch (SQLException ex) {
@@ -153,8 +156,8 @@ public class InscripcioonData {
     }
     public List<Materia> obtenerMateriasNoCursadas(int idAlumno){
         ArrayList<Materia> materias=new ArrayList<>();
-        String sql= "SELECT * FROM materia WHERE estado= 1 AND idMateria NOT IN "
-                +" (SELECT idMateria FROM inscripcion WHERE idAlumno= ?)";
+        String sql= "SELECT * FROM materia WHERE estadoMateria = 1 AND idMateria NOT IN "
+        + "(SELECT idMateria FROM inscripcion WHERE idAlumno = ?)";
         try {
             PreparedStatement ps=con.prepareStatement(sql);
             ps.setInt(1, idAlumno);
@@ -162,8 +165,8 @@ public class InscripcioonData {
             while(rs.next()){
                 Materia materia= new Materia();
                 materia.setIdMateria(rs.getInt("idMateria"));
-                materia.setNombreMateria(rs.getString("nombre"));
-                materia.setAnioMateria(rs.getInt("año"));
+                materia.setNombreMateria(rs.getString("nombreMateria"));
+                materia.setAnioMateria(rs.getInt("anioMateria"));
                 materias.add(materia);
             }
         } catch (SQLException ex) {
@@ -177,7 +180,7 @@ public class InscripcioonData {
                 + "FROM inscripcion i, alumno a"
                 + " WHERE i.idAlumno = a.idAlumno AND idMateria = ?";
         try {
-            PreparedStatement ps=con.prepareStatement(sql);
+            PreparedStatement ps=con.prepareCall(sql);
             ps.setInt(1, idMateria);
             
             ResultSet rs=ps.executeQuery();

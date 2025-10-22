@@ -29,7 +29,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     public VistaInscripcion() {
         initComponents();
         con = (Connection) Conexion.getConexion();
-        aData = new AlumnooData();
+        aData = new AlumnooData(con);
         listaA = aData.verAlumnos();
         modelo = new DefaultTableModel();
         
@@ -68,13 +68,13 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
 
         jtMaterias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Año"
+                "ID", "Nombre", "Año", "Estado"
             }
         ));
         jtMaterias.setToolTipText("");
@@ -250,14 +250,14 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     }
     private void cargaDatosNoInscriptas(){
         Alumno selec= (Alumno)jcbAlumno.getSelectedItem();
-        listaM = (ArrayList) ins.obtenerMateriasNoCursadas(selec.getId());
+        listaM =ins.obtenerMateriasNoCursadas(selec.getId());
         for(Materia m: listaM){
             modelo.addRow(new Object[] {m.getIdMateria(), m.getNombreMateria(), m.getAnioMateria()});
         }
     }
     private void cargaDatosIncriptas(){
         Alumno selec= (Alumno) jcbAlumno.getSelectedItem();
-        List <Materia> lista= (ArrayList) ins.obtenerMateriasCursadas(selec.getId());
+        List <Materia> lista= ins.obtenerMateriasCursadas(selec.getId());
         for (Materia m : lista){
             modelo.addRow(new Object[] {m.getIdMateria(),m.getNombreMateria(),m.getAnioMateria()});
         }
@@ -267,6 +267,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         filaCabecera.add("ID");
         filaCabecera.add("Nombre");
         filaCabecera.add("Año");
+        filaCabecera.add("Estado");
         for(Object it: filaCabecera){
             modelo.addColumn(it);
         }

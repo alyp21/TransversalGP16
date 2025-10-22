@@ -12,11 +12,11 @@ import javax.swing.JOptionPane;
 
 public class AlumnooData {
     
+    private Connection con = null;
+    
     public AlumnooData() {
     }
     
-    private Connection con = null;
-   
     public AlumnooData(Connection con) {
         this.con = con;
     }
