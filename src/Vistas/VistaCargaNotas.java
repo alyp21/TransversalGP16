@@ -161,18 +161,27 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
         borrarFilas();
         Alumno alumnoSel = (Alumno) jcbAlumnos.getSelectedItem();
         if(alumnoSel != null){
-            int idAlumno = alumnoSel.getId();
-           List<Inscripcion> inscripcioonDatas = ins.obtenerInscripcionesPorAlumno(idAlumno);
-            
-            for(Inscripcion insc: inscripcioonDatas){
-            modeloT.addRow(new Object[]{
-                insc.getMateria().getIdMateria(),
-                insc.getMateria().getNombreMateria(),
-                insc.getNota()
+            boolean existe = false;
+            for (int i = 0; i < modeloT.getRowCount(); i++) {
+                int idExi =(int) modeloT.getValueAt(i, 0);
+                if(idExi == alumnoSel.getId()){
+                existe = true;
+                break;
+                }
                 
-            });
             }
-        }
+            if (!existe) {
+                modeloT.addRow(new Object[]{
+                alumnoSel.getId(),
+                alumnoSel.getNombre(),
+                alumnoSel.getApellido(),
+                ""
+                });
+            }else{
+            JOptionPane.showMessageDialog(this, "este alumno ya fue agregado");
+            }
+        }   
+       
     }//GEN-LAST:event_jcbAlumnosActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed

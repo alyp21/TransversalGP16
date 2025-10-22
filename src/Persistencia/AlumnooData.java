@@ -101,6 +101,7 @@ public class AlumnooData {
             
             while (resultado.next()){
                 Alumno a= new Alumno();
+                a.setId(resultado.getInt("idAlumno"));
                 a.setDni(resultado.getInt("dni"));
                 a.setApellido(resultado.getString("apellido"));
                 a.setNombre(resultado.getString("nombre"));
