@@ -8,26 +8,26 @@ import Persistencia.AlumnooData;
 import Modelo.Alumno;
 import Modelo.Inscripcion;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel; 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 
 public class VistaCargaNotas extends javax.swing.JInternalFrame {
  
 
     private Connection con;
     private InscripcioonData ins;
+    private Inscripcion in;
     private AlumnooData ad;
-    private Alumno al;
-    DefaultTableModel modelo;
+    DefaultTableModel modeloT;
     
     
     public VistaCargaNotas() {
         initComponents();
          
-        con= (Connection) Conexion.getConexion();
-        ins= new InscripcioonData((org.mariadb.jdbc.Connection) con);
-         ad = new AlumnooData(con);
+        con = (Connection) Conexion.getConexion();
+        ins = new InscripcioonData((org.mariadb.jdbc.Connection) con);
+        ad = new AlumnooData(con);
         armarCabeceraTabla();
         cargarAlumnos();
     }      
@@ -55,13 +55,13 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
 
         jtCargaNotas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Id", "Nombre", "Notas"
+                "Id", "Nombre", "Apellido", "Notas"
             }
         ));
         jScrollPane1.setViewportView(jtCargaNotas);
@@ -151,9 +151,9 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private void borrarFilas(){
-    int a = modelo.getRowCount() - 1;
-    for(; a >= 0; a--){
-    modelo.removeRow(a);
+      int a = modeloT.getRowCount() - 1;
+        for(; a >= 0; a--){
+        modeloT.removeRow(a);
     }
     }
     
@@ -165,7 +165,7 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
            List<Inscripcion> inscripcioonDatas = ins.obtenerInscripcionesPorAlumno(idAlumno);
             
             for(Inscripcion insc: inscripcioonDatas){
-            modelo.addRow(new Object[]{
+            modeloT.addRow(new Object[]{
                 insc.getMateria().getIdMateria(),
                 insc.getMateria().getNombreMateria(),
                 insc.getNota()
@@ -186,10 +186,10 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
             return;
         }
         int idAlumno = alumnoSelec.getId();
-        for(int i = 0; i < modelo.getRowCount(); i++){
+        for(int i = 0; i < modeloT.getRowCount(); i++){
             try {
-                int idMateria = (Integer) modelo.getValueAt(i, 0);
-                double nuevaNota = Double.parseDouble(modelo.getValueAt(i, 2).toString());
+                int idMateria = (Integer) modeloT.getValueAt(i, 0);
+                double nuevaNota = Double.parseDouble(modeloT.getValueAt(i, 2).toString());
                 ins.actualizarNota(idAlumno, idMateria, nuevaNota);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "fijarse en la nota " + (i +  1) + " no es un numero valido");
@@ -221,12 +221,12 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
     
     private void armarCabeceraTabla() {
-        modelo = new DefaultTableModel();
-        modelo.addColumn("Id");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Apellido");
-        modelo.addColumn("Notas");
-        jtCargaNotas.setModel(modelo);
+        modeloT = new DefaultTableModel();
+        modeloT.addColumn("Id");
+        modeloT.addColumn("Nombre");
+        modeloT.addColumn("Apellido");
+        modeloT.addColumn("Notas");
+        jtCargaNotas.setModel(modeloT);
     }
     public void cargarAlumnos(){
     jcbAlumnos.removeAllItems();
@@ -235,5 +235,17 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
    for(Alumno a: lista){
        jcbAlumnos.addItem(a);
    }
+    }
+    private void cargarAlumnosTabla(){   
+    
+    List<Alumno> lista = ad.verAlumnos();
+
+    for (Alumno a : lista) {
+        modeloT.addRow(new Object[]{
+            a.getId(),
+            a.getNombre(),
+            a.getApellido(),         
+        });
+      }
     }
 }

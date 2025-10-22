@@ -5,7 +5,7 @@ import java.util.Objects;
 
 
 public class Materia {
-    private int idMateria = -1;
+    private int idMateria;
     private String nombreMateria;
     private int anioMateria;
     private boolean estadoMateria;
@@ -95,7 +95,7 @@ public class Materia {
 
     @Override
     public String toString() {
-        return "Materia{" + "idMateria=" + idMateria + ", nombreMateria=" + nombreMateria + ", anioMateria=" + anioMateria + ", estadoMateria=" + estadoMateria + '}';
+        return nombreMateria + " " + anioMateria;
     }
 }
 

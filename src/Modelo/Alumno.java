@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Alumno {
     
-    private int id= -1;
+    private int id;
     private int dni;
     private String nombre;
     private String apellido;
@@ -129,7 +129,7 @@ public class Alumno {
 
     @Override
     public String toString() {
-        return dni + " " + apellido+ " " + nombre;
+        return dni + " ";
     }
 
     public Object getEstadoString() {

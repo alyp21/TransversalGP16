@@ -3,6 +3,7 @@ package Vistas;
 
 import Modelo.Alumno;
 import Modelo.Materia;
+import Persistencia.AlumnooData;
 import Persistencia.Conexion;
 import Persistencia.InscripcioonData;
 import Persistencia.MateriaData;
@@ -16,6 +17,7 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
     private Connection con;
     private InscripcioonData ins;
     private MateriaData mat;
+    private AlumnooData alum;
     DefaultTableModel modelo;
     
     public VistaListarInscripciones() {
@@ -23,8 +25,9 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
         con = (Connection) Conexion.getConexion();
         ins = new InscripcioonData(con);
         mat = new MateriaData(con);
+        alum = new AlumnooData(con);
         armarCabeceraTabla();
-        cargaMaterias();
+        cargaAlumnos();
     }
 
     /**
@@ -57,6 +60,8 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
         );
 
         jLabel3.setText("jLabel3");
+
+        setClosable(true);
 
         jlListarInscripciones.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jlListarInscripciones.setText("Listar Inscripciones");
@@ -158,11 +163,20 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
         jtListarInscripciones.setModel(modelo);
     }
     
-    private void cargaMaterias(){
-        List <Materia> materias = mat.verMaterias();
-        for ( Materia m : materias){
-            jcbMaterias.addItem(m);
-        }
+    private void cargaAlumnos(){
+    
+    borrarFilaTabla();
+    
+    List<Alumno> lista = alum.verAlumnos();
+
+    for (Alumno a : lista) {
+        modelo.addRow(new Object[]{
+            a.getId(),
+            a.getDni(),
+            a.getApellido(),
+            a.getNombre(),
+        });
+      }
     }
     
     private void borrarFilaTabla(){
@@ -174,7 +188,6 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
     }
     
     private void cargarAlumnosPorMateria(Materia materia){
-        borrarFilaTabla();
         List <Alumno> alumnos = ins.obtenerAlumnosXMateria(materia.getIdMateria());
         for(Alumno a : alumnos){
             modelo.addRow(new Object[]{

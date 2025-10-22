@@ -11,8 +11,6 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class InscripcioonData {
@@ -21,8 +19,8 @@ public class InscripcioonData {
     }
     
     private Connection con = null;
-    private MateriaData md=new MateriaData();
-    private AlumnooData alum=new AlumnooData();
+    private MateriaData md =new MateriaData();
+    private AlumnooData alum =new AlumnooData();
     
     public InscripcioonData(Connection con) {
         this.con = con;
@@ -30,15 +28,16 @@ public class InscripcioonData {
     
     public void guardarIncripcion(Inscripcion insc) {
         
-        String sql="INSERT INTO inscripcion(idAlumno, idMateria, nota) VALUES (?,?,?)";
+        String sql="INSERT INTO inscripcion (idAlumno, idMateria, nota) VALUES (?,?,?)";
+        
         try {
-            PreparedStatement ps=con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, insc.getAlumno().getId());
             ps.setInt(2, insc.getMateria().getIdMateria());
             ps.setDouble(3,insc.getNota());
             ps.executeUpdate();
             ResultSet rs= ps.getGeneratedKeys();
-            if(rs.next()){
+            if (rs.next()){
                 insc.setIdInscripcion(rs.getInt(1));
                 JOptionPane.showMessageDialog(null, "Inscripcion Registrada");
             }
@@ -49,13 +48,15 @@ public class InscripcioonData {
     }
     
     public void actualizarNota(int idAlumno, int idMateria, double nota){
-        String sql="UPDATE inscripcion SET nota = ? WHERE idAlumno= ? and idMateria = ?";
+        
+        String sql="UPDATE inscripcion SET nota = ? WHERE idAlumno= ? AND idMateria = ?";
         try {
             PreparedStatement ps=con.prepareStatement(sql);
             ps.setDouble(1, nota);
             ps.setInt(2, idAlumno);
             ps.setInt(3, idMateria);
             int filas= ps.executeUpdate();
+            
             if(filas>0){
                 JOptionPane.showMessageDialog(null, "Nota actualizada");
             }
@@ -65,9 +66,11 @@ public class InscripcioonData {
     }
     
     public void borrarInscripcionMateriaAlumno(int idAlumno, int idMateria){
+        
         String sql="DELETE FROM inscripcion WHERE idAlumno= ? and idMateria= ?";
+        
         try {
-            PreparedStatement ps=con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, idAlumno);
             ps.setInt(2, idMateria);
             
@@ -170,8 +173,8 @@ public class InscripcioonData {
     }
     public List<Alumno> obtenerAlumnosXMateria(int idMateria){
         ArrayList<Alumno> alumnosMateria= new ArrayList<>();
-        String sql= "SELECT a.idAlumno, dni, nombre, apellido, fechaNacimiento, estado"+
-                "FROM inscripcion i, alumno a"
+        String sql= "SELECT a.idAlumno, dni, nombre, apellido, fechaNacimiento, estado "
+                + "FROM inscripcion i, alumno a"
                 + " WHERE i.idAlumno = a.idAlumno AND idMateria = ?";
         try {
             PreparedStatement ps=con.prepareStatement(sql);
