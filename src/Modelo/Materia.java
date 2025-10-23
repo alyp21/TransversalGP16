@@ -97,5 +97,9 @@ public class Materia {
     public String toString() {
         return nombreMateria + " " + anioMateria;
     }
+    
+    public Object getEstadoString() {
+       return this.estadoMateria ? "Activo" : "Inactivo";
+    }
 }
 

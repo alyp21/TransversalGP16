@@ -129,7 +129,7 @@ public class Alumno {
 
     @Override
     public String toString() {
-        return dni + " ";
+        return dni + ", "+ nombre + " "+ apellido;
     }
 
     public Object getEstadoString() {

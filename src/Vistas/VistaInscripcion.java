@@ -10,6 +10,7 @@ import Persistencia.InscripcioonData;
 import Persistencia.MateriaData;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.mariadb.jdbc.Connection;
 
@@ -115,6 +116,11 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         });
 
         jbSalir.setText("Salir");
+        jbSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -194,6 +200,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_rbMateriasNoInscriptasActionPerformed
 
     private void jbInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbInscribirActionPerformed
+        try{
         int filaSeleccionada= jtMaterias.getSelectedRow();
         if(filaSeleccionada != -1){
             int id = Integer.parseInt(jcbAlumno.getSelectedItem().toString());
@@ -202,11 +209,18 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
             int idMateria=(Integer) modelo.getValueAt(filaSeleccionada, 0);
             String nombreMateria= (String) modelo.getValueAt(filaSeleccionada, 1);
             int anio= (Integer) modelo.getValueAt(filaSeleccionada,2);
-            Materia m= new Materia(idMateria,nombreMateria,anio,true);
+            boolean estado= (Boolean)modelo.getValueAt(filaSeleccionada, 3);
+            
+            Materia m= new Materia(idMateria,nombreMateria,anio,estado);
             
             Inscripcion i= new Inscripcion (a,m,0);
             ins.guardarIncripcion(i);
             borrarFilaTabla();
+        }else{
+            JOptionPane.showMessageDialog(this, "Seleccione una materia para hacer la inscripcion");
+        }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Error al guardar la inscripcion del alumno seleccionado"+e.getMessage());
         }
     }//GEN-LAST:event_jbInscribirActionPerformed
 
@@ -221,6 +235,10 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         }
         
     }//GEN-LAST:event_jbAnularActionPerformed
+
+    private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
+        dispose();
+    }//GEN-LAST:event_jbSalirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -250,18 +268,24 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         }
     }
     private void cargaDatosNoInscriptas(){
+        try{
         Alumno selec= (Alumno)jcbAlumno.getSelectedItem();
         listaM =ins.obtenerMateriasNoCursadas(selec.getId());
         for(Materia m: listaM){
-            modelo.addRow(new Object[] {m.getIdMateria(), m.getNombreMateria(), m.getAnioMateria()});
+            modelo.addRow(new Object[] {m.getIdMateria(), m.getNombreMateria(), m.getAnioMateria(),m.isEstadoMateria()});
+        }}catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Error al cargar los datos de las materias no inscriptas");
         }
     }
     private void cargaDatosIncriptas(){
+        try{
         Alumno selec= (Alumno) jcbAlumno.getSelectedItem();
         List <Materia> lista= ins.obtenerMateriasCursadas(selec.getId());
         for (Materia m : lista){
-            modelo.addRow(new Object[] {m.getIdMateria(),m.getNombreMateria(),m.getAnioMateria()});
-        }
+            modelo.addRow(new Object[] {m.getIdMateria(),m.getNombreMateria(),m.getAnioMateria(),m.isEstadoMateria()});
+        }}catch(Exception e){
+                JOptionPane.showMessageDialog(this, "Error al cargar los datos de las materias inscriptas");
+                }
     }
     private void armarCabeceraTabla() {
         ArrayList<Object> filaCabecera = new ArrayList<>();

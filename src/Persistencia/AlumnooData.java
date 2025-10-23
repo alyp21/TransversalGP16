@@ -40,7 +40,7 @@ public class AlumnooData {
     }
     public Alumno buscarAlumno(int id){
         Alumno alumno= null;
-        String sql = "SELECT dni, apellido, nombre, fechaNacimiento FROM alumno WHERE idAlumno = ? AND estado= 1";
+        String sql = "SELECT dni, apellido, nombre, fechaNacimiento FROM alumno WHERE idAlumno = ?";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -66,7 +66,7 @@ public class AlumnooData {
     }
     public Alumno buscarAlumnoPorDni(int dni){
         Alumno alumno= null;
-        String sql = "SELECT idAlumno, dni, apellido, nombre, fechaNacimiento FROM alumno WHERE dni = ? AND estado= 1";
+        String sql = "SELECT idAlumno, dni, apellido, nombre, fechaNacimiento FROM alumno WHERE dni = ?";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -189,7 +189,7 @@ public class AlumnooData {
             if (registros > 0) {
                 System.out.println("El alumno fue dado de alta con exito. Registros actualizados: " + registros);
         } else {
-                System.out.println("No se encontr贸 un alumno con ese DNI.");
+                System.out.println("No se encontro un alumno con ese DNI.");
             }
         } catch (SQLException ex){
             JOptionPane.showMessageDialog(null, "Error de conexion: " + ex.getMessage());

@@ -8,6 +8,7 @@ import Persistencia.Conexion;
 import Persistencia.InscripcioonData;
 import Persistencia.MateriaData;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.mariadb.jdbc.Connection;
 
@@ -17,6 +18,7 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
     private Connection con;
     private InscripcioonData ins;
     private MateriaData mat;
+    private Materia materia;
     private AlumnooData alum;
     DefaultTableModel modelo;
     
@@ -76,13 +78,13 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
 
         jtListarInscripciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Id", "Dni", "Apellido", "Nombre"
+                "Id", "Nombre", "Apellido"
             }
         ));
         jScrollPane1.setViewportView(jtListarInscripciones);
@@ -136,10 +138,29 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcbMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbMateriasActionPerformed
-        Materia materiaSeleccionada = (Materia) jcbMaterias.getSelectedItem();
-        if (materiaSeleccionada != null){
-            cargarAlumnosPorMateria(materiaSeleccionada);
-        }
+        borrarFilaTabla();
+        Materia materiaSelec = (Materia) jcbMaterias.getSelectedItem();
+        if(materiaSelec != null){
+            boolean existe = false;
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                int idExi =(int) modelo.getValueAt(i, 0);
+                if(idExi == materiaSelec.getIdMateria()){
+                existe = true;
+                break;
+                }
+                
+            }
+            if (!existe) {
+                modelo.addRow(new Object[]{
+                materiaSelec.getIdMateria(),
+                materiaSelec.getNombreMateria(),
+                materiaSelec.getAnioMateria(),
+                ""
+                });
+            }else{
+            JOptionPane.showMessageDialog(this, "Este alumno ya fue agregado");
+            }
+    }                                         
     }//GEN-LAST:event_jcbMateriasActionPerformed
 
 
@@ -157,9 +178,8 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
     private void armarCabeceraTabla() {
         modelo = new DefaultTableModel();
         modelo.addColumn("Id");
-        modelo.addColumn("Dni");
-        modelo.addColumn("Apellido");
         modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido");
         jtListarInscripciones.setModel(modelo);
     }
     
@@ -172,9 +192,8 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
     for (Alumno a : lista) {
         modelo.addRow(new Object[]{
             a.getId(),
-            a.getDni(),
-            a.getApellido(),
             a.getNombre(),
+            a.getApellido()
         });
       }
     }

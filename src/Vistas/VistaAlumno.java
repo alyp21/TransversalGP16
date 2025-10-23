@@ -450,7 +450,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             Integer dni= Integer.parseInt(jtfDni.getText());
             alumnoActual= alum.buscarAlumnoPorDni(dni);
             
-            
             if(alumnoActual!=null){
                 jtfApellido.setText(alumnoActual.getApellido());
                 jtfNombreAlumno.setText(alumnoActual.getNombre());
