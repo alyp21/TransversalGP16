@@ -135,7 +135,6 @@ public class MateriaData {
                 System.out.println("La materia fue dada de baja con exito. Registros actualizados: " + registros);
         } else {
                 System.out.println("No se encontro ninguna materia con este nombre.");
-        
             }
         } catch (SQLException ex){
             JOptionPane.showMessageDialog(null, "Error de conexion: " + ex.getMessage());
@@ -156,7 +155,6 @@ public class MateriaData {
                 System.out.println("La materia fue dada de alta con exito. Registros actualizados: " + registros);
         } else {
                 System.out.println("No se encontro ninguna materia con este nombre.");
-        
             }
         } catch (SQLException ex){
             JOptionPane.showMessageDialog(null, "Error de conexion: " + ex.getMessage());

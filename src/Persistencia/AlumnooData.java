@@ -35,7 +35,7 @@ public class AlumnooData {
                 int registros = ps.executeUpdate();
                 System.out.println("Alumno cargado correctamente. Registros insertados: " + registros);
             }catch(SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Error de conexi贸n: " + ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Error de conexion: " + ex.getMessage());
         }
     }
     public Alumno buscarAlumno(int id){
@@ -135,7 +135,7 @@ public class AlumnooData {
             if (registros > 0) {
                 System.out.println("El alumno fue actualizado con exito. Registros actualizados: " + registros);
         } else {
-                System.out.println("No se encontr贸 un alumno con ese DNI.");
+                System.out.println("No se encontro un alumno con ese DNI.");
         }
             
         } catch (SQLException ex){
@@ -162,14 +162,14 @@ public class AlumnooData {
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(2, dni);
+            ps.setInt(1, dni);
             
             int registros = ps.executeUpdate();
             
             if (registros > 0) {
                 System.out.println("El alumno fue dado de baja con exito. Registros actualizados: " + registros);
         } else {
-                System.out.println("No se encontr贸 un alumno con ese DNI.");
+                System.out.println("No se encontro un alumno con ese DNI.");
         
             }
         } catch (SQLException ex){
@@ -182,7 +182,7 @@ public class AlumnooData {
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(2, dni);
+            ps.setInt(1, dni);
             
             int registros = ps.executeUpdate();
             
