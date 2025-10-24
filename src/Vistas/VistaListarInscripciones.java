@@ -177,9 +177,9 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
 
     private void armarCabeceraTabla() {
         modelo = new DefaultTableModel();
-        modelo.addColumn("Id");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Apellido");
+        modelo.addColumn("Id Materia");
+        modelo.addColumn("Nombre Materia");
+        modelo.addColumn("Nota");
         jtListarInscripciones.setModel(modelo);
     }
     
@@ -205,16 +205,5 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
             modelo.removeRow(i);
         }
     }
-    
-    private void cargarAlumnosPorMateria(Materia materia){
-        List <Alumno> alumnos = ins.obtenerAlumnosXMateria(materia.getIdMateria());
-        for(Alumno a : alumnos){
-            modelo.addRow(new Object[]{
-                a.getId(),
-                a.getDni(),
-                a.getApellido(),
-                a.getNombre()
-            });
-        }
-    }
+   
 }

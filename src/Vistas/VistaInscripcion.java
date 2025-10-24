@@ -31,6 +31,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         initComponents();
         con = (Connection) Conexion.getConexion();
         aData = new AlumnooData(con);
+        mData = new MateriaData(con);
         listaA = aData.verAlumnos();
         modelo = new DefaultTableModel();
         
@@ -122,6 +123,12 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
             }
         });
 
+        jcbAlumno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbAlumnoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -202,20 +209,22 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     private void jbInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbInscribirActionPerformed
         try{
         int filaSeleccionada= jtMaterias.getSelectedRow();
+        
         if(filaSeleccionada != -1){
-            int id = Integer.parseInt(jcbAlumno.getSelectedItem().toString());
             Alumno a= (Alumno) jcbAlumno.getSelectedItem();
             
             int idMateria=(Integer) modelo.getValueAt(filaSeleccionada, 0);
             String nombreMateria= (String) modelo.getValueAt(filaSeleccionada, 1);
             int anio= (Integer) modelo.getValueAt(filaSeleccionada,2);
-            boolean estado= (Boolean)modelo.getValueAt(filaSeleccionada, 3);
-            
+            String estadoComoTexto= (String)modelo.getValueAt(filaSeleccionada, 3);
+            boolean estado = estadoComoTexto.equals("Activo");
             Materia m= new Materia(idMateria,nombreMateria,anio,estado);
+            
             
             Inscripcion i= new Inscripcion (a,m,0);
             ins.guardarIncripcion(i);
-            borrarFilaTabla();
+//          borrarFilaTabla();
+            modelo.removeRow(filaSeleccionada);
         }else{
             JOptionPane.showMessageDialog(this, "Seleccione una materia para hacer la inscripcion");
         }
@@ -231,7 +240,8 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
             int idMateria= (Integer)modelo.getValueAt(filaSeleccionada, 0);
             
             ins.borrarInscripcionMateriaAlumno(a.getId(), idMateria);
-            borrarFilaTabla();
+//          borrarFilaTabla();
+            modelo.removeRow(filaSeleccionada);
         }
         
     }//GEN-LAST:event_jbAnularActionPerformed
@@ -239,6 +249,20 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
         dispose();
     }//GEN-LAST:event_jbSalirActionPerformed
+
+    private void jcbAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbAlumnoActionPerformed
+        //Esto borra las filas de la tabla para que se muestre vacia
+        borrarFilaTabla();
+        //Comprueba si el filtro está activo (inscriptas o no inscriptas)
+        if(rbMateriasInscriptas.isSelected()){
+            //Carga las materias inscriptas del nuevo alumno
+            cargaDatosIncriptas();
+        }else if(rbMateriasNoInscriptas.isSelected()){
+            //Carga las materias no inscriptas del nuevo alumno
+            cargaDatosNoInscriptas();
+        }
+        //Y en el caso de que ningún rb esté seleccionado la tabla se mostrará vacía
+    }//GEN-LAST:event_jcbAlumnoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -272,20 +296,22 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         Alumno selec= (Alumno)jcbAlumno.getSelectedItem();
         listaM =ins.obtenerMateriasNoCursadas(selec.getId());
         for(Materia m: listaM){
-            modelo.addRow(new Object[] {m.getIdMateria(), m.getNombreMateria(), m.getAnioMateria(),m.isEstadoMateria()});
-        }}catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Error al cargar los datos de las materias no inscriptas");
+            modelo.addRow(new Object[] {m.getIdMateria(), m.getNombreMateria(), m.getAnioMateria(),m.getEstadoString()});
+        }
+    }catch(Exception e){
+        JOptionPane.showMessageDialog(this, "Error al cargar los datos de las materias no inscriptas");
         }
     }
     private void cargaDatosIncriptas(){
-        try{
+    try{
         Alumno selec= (Alumno) jcbAlumno.getSelectedItem();
         List <Materia> lista= ins.obtenerMateriasCursadas(selec.getId());
         for (Materia m : lista){
-            modelo.addRow(new Object[] {m.getIdMateria(),m.getNombreMateria(),m.getAnioMateria(),m.isEstadoMateria()});
-        }}catch(Exception e){
-                JOptionPane.showMessageDialog(this, "Error al cargar los datos de las materias inscriptas");
-                }
+            modelo.addRow(new Object[] {m.getIdMateria(),m.getNombreMateria(),m.getAnioMateria(),m.getEstadoString()});
+        }
+    }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Error al cargar los datos de las materias inscriptas");
+        }
     }
     private void armarCabeceraTabla() {
         ArrayList<Object> filaCabecera = new ArrayList<>();

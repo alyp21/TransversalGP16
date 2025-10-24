@@ -316,17 +316,15 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
            alumnito.setDni(Integer.parseInt(jtfDni.getText()));
            alumnito.setApellido(jtfApellido.getText());
            alumnito.setNombre(jtfNombreAlumno.getText());
-           alumnito.setFechaNacimiento(LocalDate.parse(jtfFechaNacimiento.getText()));
+           //Definimos el formato de la fecha
+           DateTimeFormatter formato= DateTimeFormatter.ofPattern("yyyy/MM/dd");
+           //Y acá aplicamos el formato
+           alumnito.setFechaNacimiento(LocalDate.parse(jtfFechaNacimiento.getText(),formato));
            String estadoSeleccionado = (String) jcbEstadoAlumno.getSelectedItem();
            alumnito.setEstado(estadoSeleccionado.equals("Activo"));
            
            alum.guardarAlumno(alumnito);
            JOptionPane.showMessageDialog(this, "Alumno guardado con exito");
-           jbInsertarAlumno.setEnabled(false);
-           jbActualizarAlumnos.setEnabled(false);
-           jbEliminarAlumnos.setEnabled(false);
-           jbAltaLogicaAlumno.setEnabled(false);
-           jbBajaLogicaAlumno.setEnabled(false);
 
            limpiarCampos();
            cargarAlumnos();
@@ -341,12 +339,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         int dni = Integer.parseInt(jtfDni.getText());
         alum.eliminarAlumno(dni);
         JOptionPane.showMessageDialog(this, "Alumno eliminado");
-        
-           jbInsertarAlumno.setEnabled(false);
-           jbActualizarAlumnos.setEnabled(false);
-           jbEliminarAlumnos.setEnabled(false);
-           jbAltaLogicaAlumno.setEnabled(false);
-           jbBajaLogicaAlumno.setEnabled(false);
            
         limpiarCampos();
         cargarAlumnos();
@@ -367,12 +359,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                 a.setEstado(true);
                 jcbEstadoAlumno.setSelectedItem("Activo");
                 JOptionPane.showMessageDialog(this, "Alumno dado de alta correctamente.");
-                
-                jbInsertarAlumno.setEnabled(false);
-                jbActualizarAlumnos.setEnabled(false);
-                jbEliminarAlumnos.setEnabled(false);
-                jbAltaLogicaAlumno.setEnabled(false);
-                jbBajaLogicaAlumno.setEnabled(false);
                 
                 limpiarCampos();
                 cargarAlumnos();
@@ -399,12 +385,6 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                 jcbEstadoAlumno.setSelectedItem("Inactivo");
                 JOptionPane.showMessageDialog(this, "Alumno dado de baja correctamente.");
                 
-                jbInsertarAlumno.setEnabled(false);
-                jbActualizarAlumnos.setEnabled(false);
-                jbEliminarAlumnos.setEnabled(false);
-                jbAltaLogicaAlumno.setEnabled(false);
-                jbBajaLogicaAlumno.setEnabled(false);
-                
                 limpiarCampos();
                 cargarAlumnos();
             } else {
@@ -424,12 +404,13 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             String apellido = jtfApellido.getText();
             String nombre = jtfNombreAlumno.getText();
             boolean estado = jcbEstadoAlumno.getSelectedItem().equals("Activo");
+            DateTimeFormatter formato= DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
             Alumno a = new Alumno();
             a.setDni(dni);
             a.setApellido(apellido);
             a.setNombre(nombre);
-            a.setFechaNacimiento(LocalDate.parse(jtfFechaNacimiento.getText()));
+            a.setFechaNacimiento(LocalDate.parse(jtfFechaNacimiento.getText(),formato));
             a.setEstado(estado);
             alum.actualizarAlumno(a);
             
@@ -438,6 +419,8 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             
         } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "No se encontro ningun alumno con este dni.");
+        }catch(java.time.DateTimeException e){
+            JOptionPane.showMessageDialog(this, "Error en el formato de la fecha. Use yyyy/MM/dd");
         }
     }//GEN-LAST:event_jbActualizarAlumnosActionPerformed
 

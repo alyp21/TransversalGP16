@@ -238,12 +238,6 @@ public class VistaMateria extends javax.swing.JInternalFrame {
            
            mat.guardarMateria(materia);
            JOptionPane.showMessageDialog(this, "Materia guardada con exito");
-           
-           jbInsertarMateria.setEnabled(false);
-           jbActualizarMaterias.setEnabled(false);
-           jbEliminarMateria.setEnabled(false);
-           jbAltaLogicaMateria.setEnabled(false);
-           jbBajaLogicaMateria.setEnabled(false);
 
            limpiarCampos();
            cargarMaterias();
@@ -259,20 +253,14 @@ public class VistaMateria extends javax.swing.JInternalFrame {
             Materia m = mat.buscarMateria(nombreMateria);
 
         if (m != null) {
-            if (m.isEstadoMateria()) {
-                mat.altaLogicaMateria(nombreMateria);
-                m.setEstadoMateria(true);
-                jcbEstadoMateria.setSelectedItem("Activo");
-                JOptionPane.showMessageDialog(this, "Materia dada de alta correctamente.");
+            if (!m.isEstadoMateria()) {
+                    mat.altaLogicaMateria(nombreMateria);
+                    m.setEstadoMateria(true);
+                    jcbEstadoMateria.setSelectedItem("Activo");
+                    JOptionPane.showMessageDialog(this, "Materia dada de alta correctamente.");
                 
-                jbInsertarMateria.setEnabled(false);
-                jbActualizarMaterias.setEnabled(false);
-                jbEliminarMateria.setEnabled(false);
-                jbAltaLogicaMateria.setEnabled(false);
-                jbBajaLogicaMateria.setEnabled(false);
-                
-                limpiarCampos();
-                cargarMaterias();
+                    limpiarCampos();
+                    cargarMaterias();
                 
             } else {
                 JOptionPane.showMessageDialog(this, "La materia ya esta activa.");
@@ -298,12 +286,6 @@ public class VistaMateria extends javax.swing.JInternalFrame {
             m.setEstadoMateria(estado);
             mat.actualizarMateria(m);
             
-            jbInsertarMateria.setEnabled(false);
-            jbActualizarMaterias.setEnabled(false);
-            jbEliminarMateria.setEnabled(false);
-            jbAltaLogicaMateria.setEnabled(false);
-            jbBajaLogicaMateria.setEnabled(false);
-            
             limpiarCampos();
             cargarMaterias();
             
@@ -324,12 +306,6 @@ public class VistaMateria extends javax.swing.JInternalFrame {
                 jcbEstadoMateria.setSelectedItem("Inactivo");
                 JOptionPane.showMessageDialog(this, "Materia dada de baja correctamente.");
                 
-                jbInsertarMateria.setEnabled(false);
-                jbActualizarMaterias.setEnabled(false);
-                jbEliminarMateria.setEnabled(false);
-                jbAltaLogicaMateria.setEnabled(false);
-                jbBajaLogicaMateria.setEnabled(false);
-                
                 limpiarCampos();
                 cargarMaterias();
                 
@@ -349,12 +325,6 @@ public class VistaMateria extends javax.swing.JInternalFrame {
             String nombreMateria = jtfNombreMateria.getText();
             mat.eliminarMateria(nombreMateria);
             JOptionPane.showMessageDialog(this, "Materia eliminada");
-        
-           jbInsertarMateria.setEnabled(false);
-           jbActualizarMaterias.setEnabled(false);
-           jbEliminarMateria.setEnabled(false);
-           jbAltaLogicaMateria.setEnabled(false);
-           jbBajaLogicaMateria.setEnabled(false);
            
         limpiarCampos();
         cargarMaterias();

@@ -212,8 +212,6 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_jbGuardarActionPerformed
     
-    
-    
     /**
      * @param args the command line arguments
      */

@@ -11,6 +11,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
      */
     public VistaPrincipal() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -201,4 +202,5 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmInscripciones;
     private javax.swing.JMenuItem jmMaterias;
     // End of variables declaration//GEN-END:variables
+
 }

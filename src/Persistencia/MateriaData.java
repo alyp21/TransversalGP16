@@ -48,10 +48,10 @@ public class MateriaData {
             
             if (resultado.next()){
                 materia = new Materia();
-                System.out.println("Id:" + resultado.getInt("idMateria"));
-                System.out.println("Nombre:" + resultado.getString("nombreMateria"));
-                System.out.println("Anio:" + resultado.getInt("anioMateria"));
-                System.out.println("Estado:" + resultado.getBoolean("estadoMateria"));
+                materia.setIdMateria(resultado.getInt("idMateria"));
+                materia.setNombreMateria(resultado.getString("nombreMateria"));
+                materia.setAnioMateria(resultado.getInt("anioMateria"));
+                materia.setEstadoMateria(resultado.getBoolean("estadoMateria"));
             }else {
                 System.out.println("No hay ninguna materia con este nombre.");
             }
@@ -83,6 +83,31 @@ public class MateriaData {
             JOptionPane.showMessageDialog(null,"Error de conexion: " + ex.getMessage());
         }
         return materias;
+    }
+    public List <Materia> verMateriasActivas(){
+    List <Materia> materias = new ArrayList<>();
+    String sql = "SELECT * FROM materia WHERE estadoMateria = 1"; // Solo activas
+    
+    try{
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet resultado = ps.executeQuery();
+        
+        while (resultado.next()){
+            Materia m = new Materia ();
+            // --- CORRECCIÓN (Asegúrate de cargar TODOS los datos) ---
+            m.setIdMateria(resultado.getInt("idMateria")); 
+            m.setNombreMateria(resultado.getString("nombreMateria"));
+            m.setAnioMateria(resultado.getInt("anioMateria"));
+            m.setEstadoMateria(resultado.getBoolean("estadoMateria"));
+            materias.add(m);
+        }
+        resultado.close();
+        ps.close();
+        
+    } catch (SQLException ex){
+        JOptionPane.showMessageDialog(null,"Error de conexion: " + ex.getMessage());
+        }
+    return materias;
     }
     public void actualizarMateria(Materia m){
         String sql = "UPDATE materia SET nombreMateria = ? , anioMateria = ? , estadoMateria = ? WHERE nombreMateria = ?";
@@ -121,13 +146,12 @@ public class MateriaData {
         }
     }
     public void bajaLogicaMateria(String nombreMateria){
-        String sql = "UPDATE materia SET estadoMateria = 0, WHERE nombreMateria = ?";
+        String sql = "UPDATE materia SET estadoMateria = 0 WHERE nombreMateria = ?";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             
-            ps.setBoolean(1, false);
-            ps.setString(2, nombreMateria);
+            ps.setString(1, nombreMateria);
             
             int registros = ps.executeUpdate();
             
@@ -141,13 +165,12 @@ public class MateriaData {
         }
     }
     public void altaLogicaMateria(String nombreMateria){
-        String sql = "UPDATE materia SET estadoMateria = 1 , WHERE nombreMateria = ?";
+        String sql = "UPDATE materia SET estadoMateria = 1 WHERE nombreMateria = ?";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             
-            ps.setBoolean(1, true);
-            ps.setString(2, nombreMateria);
+            ps.setString(1, nombreMateria);
             
             int registros = ps.executeUpdate();
             
