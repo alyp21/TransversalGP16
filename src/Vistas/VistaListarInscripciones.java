@@ -29,7 +29,7 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
         mat = new MateriaData(con);
         alum = new AlumnooData(con);
         armarCabeceraTabla();
-        cargaAlumnos();
+        cargarComboBoxMaterias();
     }
 
     /**
@@ -139,28 +139,25 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
 
     private void jcbMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbMateriasActionPerformed
         borrarFilaTabla();
-        Materia materiaSelec = (Materia) jcbMaterias.getSelectedItem();
-        if(materiaSelec != null){
-            boolean existe = false;
-            for (int i = 0; i < modelo.getRowCount(); i++) {
-                int idExi =(int) modelo.getValueAt(i, 0);
-                if(idExi == materiaSelec.getIdMateria()){
-                existe = true;
-                break;
-                }
-                
-            }
-            if (!existe) {
-                modelo.addRow(new Object[]{
-                materiaSelec.getIdMateria(),
-                materiaSelec.getNombreMateria(),
-                materiaSelec.getAnioMateria(),
-                ""
-                });
-            }else{
-            JOptionPane.showMessageDialog(this, "Este alumno ya fue agregado");
-            }
-    }                                         
+
+        // 2. Obtener la materia seleccionada
+        Materia materiaSeleccionada = (Materia) jcbMaterias.getSelectedItem();
+    
+        if (materiaSeleccionada == null) {
+            return; // No hacer nada si no hay selección
+    }
+        // 3. Obtener los alumnos para esa materia
+
+        List<Alumno> alumnos = ins.obtenerAlumnosXMateria(materiaSeleccionada.getIdMateria()); 
+    
+        // 4. Llenar la tabla (Asegúrate que tu cabecera coincida)
+        for (Alumno alu : alumnos) {
+            modelo.addRow(new Object[]{
+            alu.getId(),
+            alu.getNombre(),
+            alu.getApellido()
+        });
+    }                                        
     }//GEN-LAST:event_jcbMateriasActionPerformed
 
 
@@ -177,25 +174,20 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
 
     private void armarCabeceraTabla() {
         modelo = new DefaultTableModel();
-        modelo.addColumn("Id Materia");
-        modelo.addColumn("Nombre Materia");
-        modelo.addColumn("Nota");
+        modelo.addColumn("Id");
+        modelo.addColumn("Apellido");
+        modelo.addColumn("Nombre");
         jtListarInscripciones.setModel(modelo);
     }
     
-    private void cargaAlumnos(){
-    
-    borrarFilaTabla();
-    
-    List<Alumno> lista = alum.verAlumnos();
-
-    for (Alumno a : lista) {
-        modelo.addRow(new Object[]{
-            a.getId(),
-            a.getNombre(),
-            a.getApellido()
-        });
-      }
+    private void cargarComboBoxMaterias(){
+        jcbMaterias.removeAllItems();
+        
+        List<Materia> materias= mat.verMateriasActivas();
+        
+        for (Materia m : materias){
+            jcbMaterias.addItem(m);
+        }
     }
     
     private void borrarFilaTabla(){

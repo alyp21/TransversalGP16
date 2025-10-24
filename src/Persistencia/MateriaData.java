@@ -61,6 +61,31 @@ public class MateriaData {
         }
         return materia;
     }
+    public Materia buscarMateriaPorId(int idMateria) {
+    String sql = "SELECT * FROM materia WHERE idMateria = ?";
+    Materia materia = null;
+    
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, idMateria);
+        
+        ResultSet resultado = ps.executeQuery();
+        
+        if (resultado.next()) {
+            materia = new Materia();
+            materia.setIdMateria(idMateria);
+            materia.setNombreMateria(resultado.getString("nombreMateria"));
+            materia.setAnioMateria(resultado.getInt("anioMateria"));
+            materia.setEstadoMateria(resultado.getBoolean("estadoMateria"));
+        } else {
+            System.out.println("No hay ninguna materia con este ID.");
+        }
+        resultado.close();
+            }catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error de conexion al buscar materia por ID: " + ex.getMessage());
+        }
+    return materia;
+        }
     public List <Materia> verMaterias(){
         List <Materia> materias = new ArrayList();
         String sql = "SELECT * FROM materia";
@@ -94,7 +119,6 @@ public class MateriaData {
         
         while (resultado.next()){
             Materia m = new Materia ();
-            // --- CORRECCIÓN (Asegúrate de cargar TODOS los datos) ---
             m.setIdMateria(resultado.getInt("idMateria")); 
             m.setNombreMateria(resultado.getString("nombreMateria"));
             m.setAnioMateria(resultado.getInt("anioMateria"));

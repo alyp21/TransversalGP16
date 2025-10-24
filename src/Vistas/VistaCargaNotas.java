@@ -55,13 +55,13 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
 
         jtCargaNotas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Id", "Nombre", "Apellido", "Notas"
+                "Id", "Nombre", "Nota"
             }
         ));
         jScrollPane1.setViewportView(jtCargaNotas);
@@ -159,29 +159,27 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
     
     private void jcbAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbAlumnosActionPerformed
         borrarFilas();
+           
         Alumno alumnoSel = (Alumno) jcbAlumnos.getSelectedItem();
-        if(alumnoSel != null){
-            boolean existe = false;
-            for (int i = 0; i < modeloT.getRowCount(); i++) {
-                int idExi =(int) modeloT.getValueAt(i, 0);
-                if(idExi == alumnoSel.getId()){
-                existe = true;
-                break;
-                }
-                
-            }
-            if (!existe) {
+        if(alumnoSel == null){
+            return;
+        }
+        List<Inscripcion> inscripciones;
+        try{
+            inscripciones = ins.obtenerInscripcionesPorAlumno(alumnoSel.getId());
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this,"Error al cargar las inscripciones");
+            return;
+        }
+        for(Inscripcion insc : inscripciones){
+            if(insc.getMateria()!= null){
                 modeloT.addRow(new Object[]{
-                alumnoSel.getId(),
-                alumnoSel.getNombre(),
-                alumnoSel.getApellido(),
-                ""
+                    insc.getMateria().getIdMateria(),
+                    insc.getMateria().getNombreMateria(),
+                    insc.getNota()
                 });
-            }else{
-            JOptionPane.showMessageDialog(this, "este alumno ya fue agregado");
             }
-        }   
-       
+        }
     }//GEN-LAST:event_jcbAlumnosActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
@@ -209,7 +207,6 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
             return;
             }
         }
-        
     }//GEN-LAST:event_jbGuardarActionPerformed
     
     /**
@@ -228,13 +225,21 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
     
     private void armarCabeceraTabla() {
-        modeloT = new DefaultTableModel();
-        modeloT.addColumn("Id");
-        modeloT.addColumn("Nombre");
-        modeloT.addColumn("Apellido");
-        modeloT.addColumn("Notas");
+    // Usamos una clase anónima para sobrescribir 'isCellEditable'
+        modeloT = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+    // Permite que solo la columna de "Nota" (índice 2) sea editable
+            return column == 2;
+        }
+    };
+        // Columnas correctas
+        modeloT.addColumn("ID Materia");     // Columna 0
+        modeloT.addColumn("Nombre Materia"); // Columna 1
+        modeloT.addColumn("Nota");           // Columna 2
+    
         jtCargaNotas.setModel(modeloT);
-    }
+}
     public void cargarAlumnos(){
     jcbAlumnos.removeAllItems();
     List<Alumno> lista = ad.verAlumnos();
@@ -242,17 +247,5 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
    for(Alumno a: lista){
        jcbAlumnos.addItem(a);
    }
-    }
-    private void cargarAlumnosTabla(){   
-    
-    List<Alumno> lista = ad.verAlumnos();
-
-    for (Alumno a : lista) {
-        modeloT.addRow(new Object[]{
-            a.getId(),
-            a.getNombre(),
-            a.getApellido(),         
-        });
-      }
     }
 }
