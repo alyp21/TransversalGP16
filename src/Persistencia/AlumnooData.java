@@ -40,7 +40,7 @@ public class AlumnooData {
     }
     public Alumno buscarAlumno(int id){
         Alumno alumno= null;
-        String sql = "SELECT dni, apellido, nombre, fechaNacimiento FROM alumno WHERE idAlumno = ?";
+        String sql = "SELECT dni, apellido, nombre, fechaNacimiento, estado FROM alumno WHERE idAlumno = ?";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -54,7 +54,7 @@ public class AlumnooData {
                 alumno.setApellido(resultado.getString("apellido"));
                 alumno.setNombre(resultado.getString("nombre"));
                 alumno.setFechaNacimiento(resultado.getDate("fechaNacimiento").toLocalDate());
-                alumno.setEstado(true);
+                alumno.setEstado(resultado.getBoolean("estado"));
             }else {
                 JOptionPane.showMessageDialog(null,"No hay ningun alumno con este id");
             }
@@ -66,7 +66,7 @@ public class AlumnooData {
     }
     public Alumno buscarAlumnoPorDni(int dni){
         Alumno alumno= null;
-        String sql = "SELECT idAlumno, dni, apellido, nombre, fechaNacimiento FROM alumno WHERE dni = ?";
+        String sql = "SELECT idAlumno, dni, apellido, nombre, fechaNacimiento, estado FROM alumno WHERE dni = ?";
         
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -80,7 +80,7 @@ public class AlumnooData {
                 alumno.setApellido(resultado.getString("apellido"));
                 alumno.setNombre(resultado.getString("nombre"));
                 alumno.setFechaNacimiento(resultado.getDate("fechaNacimiento").toLocalDate());
-                alumno.setEstado(true);
+                alumno.setEstado(resultado.getBoolean("estado"));
             }else {
                 JOptionPane.showMessageDialog(null,"No hay ningun alumno con este dni.");
             }

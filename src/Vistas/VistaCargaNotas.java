@@ -63,8 +63,21 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
             new String [] {
                 "Id", "Nombre", "Nota"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jtCargaNotas);
+        if (jtCargaNotas.getColumnModel().getColumnCount() > 0) {
+            jtCargaNotas.getColumnModel().getColumn(0).setResizable(false);
+            jtCargaNotas.getColumnModel().getColumn(1).setResizable(false);
+            jtCargaNotas.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         jbGuardar.setText("Guardar");
         jbGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -187,25 +200,36 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbSalirActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
+        if(jtCargaNotas.isEditing()){
+            jtCargaNotas.getCellEditor().stopCellEditing();
+        }
         Alumno alumnoSelec = (Alumno) jcbAlumnos.getSelectedItem();
         if(alumnoSelec == null){
-            JOptionPane.showMessageDialog(this, "tiene que seleccionar un alumno para guardar");
-            return;
+            JOptionPane.showMessageDialog(this,"Tiene que seleccionar un alumno para guardar");
         }
         int idAlumno = alumnoSelec.getId();
-        for(int i = 0; i < modeloT.getRowCount(); i++){
-            try {
-                int idMateria = (Integer) modeloT.getValueAt(i, 0);
+        
+        boolean todasGuardadas = true;
+        for(int i = 0; i< modeloT.getRowCount();i++){
+            try{
+                int idMateria = (Integer) modeloT.getValueAt(i,0);
                 double nuevaNota = Double.parseDouble(modeloT.getValueAt(i, 2).toString());
-                ins.actualizarNota(idAlumno, idMateria, nuevaNota);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "fijarse en la nota " + (i +  1) + " no es un numero valido");
-                return;
                 
+                if(!ins.actualizarNota(idAlumno, idMateria, nuevaNota)){
+                    todasGuardadas = false;
+                }
+            }catch(NumberFormatException nf){
+                JOptionPane.showMessageDialog(this, "Fijarse en la nota" + (i+1)+" no es un numero valido");
+                return;
             }catch(Exception e){
-            JOptionPane.showMessageDialog(this, " no se guardo la nota " + e.getMessage());
-            return;
+                JOptionPane.showMessageDialog(this, " no se guardo la nota " + e.getMessage());
+                return;
             }
+        }
+            if (todasGuardadas) {
+            JOptionPane.showMessageDialog(this, "Notas actualizadas correctamente.");
+            }else{
+        JOptionPane.showMessageDialog(this, "Error: Algunas notas no se pudieron actualizar.");
         }
     }//GEN-LAST:event_jbGuardarActionPerformed
     

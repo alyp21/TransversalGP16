@@ -62,7 +62,7 @@ public class InscripcioonData {
         }
     }
     
-    public void actualizarNota(int idAlumno, int idMateria, double nota){
+    public boolean actualizarNota(int idAlumno, int idMateria, double nota){
         
         String sql="UPDATE inscripcion SET nota = ? WHERE idAlumno= ? AND idMateria = ?";
         try {
@@ -73,11 +73,11 @@ public class InscripcioonData {
             int filas= ps.executeUpdate();
             
             if(filas>0){
-                JOptionPane.showMessageDialog(null, "Nota actualizada");
+                return true;
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla inscripcion");
-        }
+        }return false;
     }
     
     public void borrarInscripcionMateriaAlumno(int idAlumno, int idMateria){

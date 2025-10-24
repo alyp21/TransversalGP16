@@ -96,6 +96,7 @@ public class MateriaData {
             
             while (resultado.next()){
                 Materia m = new Materia ();
+                m.setIdMateria(resultado.getInt("idMateria"));
                 m.setNombreMateria(resultado.getString("nombreMateria"));
                 m.setAnioMateria(resultado.getInt("anioMateria"));
                 m.setEstadoMateria(resultado.getBoolean("estadoMateria"));
