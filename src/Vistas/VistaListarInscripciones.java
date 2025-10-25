@@ -139,18 +139,11 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
 
     private void jcbMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbMateriasActionPerformed
         borrarFilaTabla();
-
-        // 2. Obtener la materia seleccionada
         Materia materiaSeleccionada = (Materia) jcbMaterias.getSelectedItem();
-    
         if (materiaSeleccionada == null) {
-            return; // No hacer nada si no hay selección
-    }
-        // 3. Obtener los alumnos para esa materia
-
-        List<Alumno> alumnos = ins.obtenerAlumnosXMateria(materiaSeleccionada.getIdMateria()); 
-    
-        // 4. Llenar la tabla (Asegúrate que tu cabecera coincida)
+            return;
+        }
+        List<Alumno> alumnos = ins.obtenerAlumnosXMateria(materiaSeleccionada.getIdMateria());
         for (Alumno alu : alumnos) {
             modelo.addRow(new Object[]{
             alu.getId(),

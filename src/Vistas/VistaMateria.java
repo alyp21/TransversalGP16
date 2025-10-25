@@ -66,6 +66,28 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 
         jlEstadoMateria.setText("Estado:");
 
+        jtfNombreMateria.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfNombreMateriaFocusLost(evt);
+            }
+        });
+        jtfNombreMateria.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfNombreMateriaKeyTyped(evt);
+            }
+        });
+
+        jtfAño.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfAñoFocusLost(evt);
+            }
+        });
+        jtfAño.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfAñoKeyTyped(evt);
+            }
+        });
+
         jcbEstadoMateria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
 
         jbVerMaterias.setText("Ver Materias");
@@ -326,13 +348,50 @@ public class VistaMateria extends javax.swing.JInternalFrame {
             mat.eliminarMateria(nombreMateria);
             JOptionPane.showMessageDialog(this, "Materia eliminada");
            
-        limpiarCampos();
-        cargarMaterias();
-        
-       } catch (HeadlessException | NumberFormatException e) {
+            limpiarCampos();
+            cargarMaterias();
+       }catch (HeadlessException | NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
        }
     }//GEN-LAST:event_jbEliminarMateriaActionPerformed
+
+    private void jtfNombreMateriaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfNombreMateriaKeyTyped
+//        char c = evt.getKeyChar();
+//        if (!Character.isLetter(c) && c != ' ' && !Character.isISOControl(c)) {
+//        evt.consume();
+//        }
+    }//GEN-LAST:event_jtfNombreMateriaKeyTyped
+
+    private void jtfAñoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfAñoKeyTyped
+//        char c = evt.getKeyChar();
+//
+//        if (!Character.isDigit(c) && !Character.isISOControl(c)) {
+//        evt.consume();
+//        }
+//        if (jtfAño.getText().length() >= 1 && !Character.isISOControl(c)) {
+//        evt.consume();
+//        }
+    }//GEN-LAST:event_jtfAñoKeyTyped
+
+    private void jtfNombreMateriaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfNombreMateriaFocusLost
+        for (char c : jtfNombreMateria.getText().toCharArray()) {
+        if (!Character.isLetter(c) && c != ' ') {
+            JOptionPane.showMessageDialog(this, "El Nombre solo puede contener letras y espacios.");
+            jtfNombreMateria.requestFocus();
+            break;
+            }
+        }
+    }//GEN-LAST:event_jtfNombreMateriaFocusLost
+
+    private void jtfAñoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfAñoFocusLost
+        for (char c : jtfAño.getText().toCharArray()) {
+        if (!Character.isDigit(c)) {
+            JOptionPane.showMessageDialog(this, "El Año solo puede contener números.");
+            jtfAño.requestFocus();
+            break;
+        }
+    }
+    }//GEN-LAST:event_jtfAñoFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -223,7 +223,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
             
             Inscripcion i= new Inscripcion (a,m,0);
             ins.guardarIncripcion(i);
-//          borrarFilaTabla();
+
             modelo.removeRow(filaSeleccionada);
         }else{
             JOptionPane.showMessageDialog(this, "Seleccione una materia para hacer la inscripcion");
@@ -240,7 +240,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
             int idMateria= (Integer)modelo.getValueAt(filaSeleccionada, 0);
             
             ins.borrarInscripcionMateriaAlumno(a.getId(), idMateria);
-//          borrarFilaTabla();
+
             modelo.removeRow(filaSeleccionada);
         }
         
@@ -251,17 +251,12 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbSalirActionPerformed
 
     private void jcbAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbAlumnoActionPerformed
-        //Esto borra las filas de la tabla para que se muestre vacia
         borrarFilaTabla();
-        //Comprueba si el filtro está activo (inscriptas o no inscriptas)
         if(rbMateriasInscriptas.isSelected()){
-            //Carga las materias inscriptas del nuevo alumno
             cargaDatosIncriptas();
         }else if(rbMateriasNoInscriptas.isSelected()){
-            //Carga las materias no inscriptas del nuevo alumno
             cargaDatosNoInscriptas();
         }
-        //Y en el caso de que ningún rb esté seleccionado la tabla se mostrará vacía
     }//GEN-LAST:event_jcbAlumnoActionPerformed
 
 

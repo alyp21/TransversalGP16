@@ -150,8 +150,16 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jtfNombreMateria">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfNombreMateriaFocusLost"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfNombreMateriaKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jtfA&#xf1;o">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfA&#xf1;oFocusLost"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfA&#xf1;oKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="jcbEstadoMateria">
           <Properties>

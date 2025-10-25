@@ -242,12 +242,22 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jtfDni">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfDniFocusLost"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtfDniActionPerformed"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfDniKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jtfApellido">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfApellidoFocusLost"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfApellidoKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jtfNombreAlumno">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jtfNombreAlumnoFocusLost"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfNombreAlumnoKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jtfFechaNacimiento">
         </Component>

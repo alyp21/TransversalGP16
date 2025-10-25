@@ -93,9 +93,41 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
         jlEstadoAlumno.setText("Estado:");
 
+        jtfDni.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfDniFocusLost(evt);
+            }
+        });
         jtfDni.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfDniActionPerformed(evt);
+            }
+        });
+        jtfDni.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfDniKeyTyped(evt);
+            }
+        });
+
+        jtfApellido.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfApellidoFocusLost(evt);
+            }
+        });
+        jtfApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfApellidoKeyTyped(evt);
+            }
+        });
+
+        jtfNombreAlumno.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfNombreAlumnoFocusLost(evt);
+            }
+        });
+        jtfNombreAlumno.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfNombreAlumnoKeyTyped(evt);
             }
         });
 
@@ -418,7 +450,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             cargarAlumnos();
             
         } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "No se encontro ningun alumno con este dni.");
+            JOptionPane.showMessageDialog(this, "No se encontro ningun alumno con este dni.");
         }catch(java.time.DateTimeException e){
             JOptionPane.showMessageDialog(this, "Error en el formato de la fecha. Use yyyy/MM/dd");
         }
@@ -454,6 +486,60 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     private void jcbEstadoAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbEstadoAlumnoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jcbEstadoAlumnoActionPerformed
+
+    private void jtfDniKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfDniKeyTyped
+//        char c = evt.getKeyChar();
+//        if (!Character.isDigit(c) && !Character.isISOControl(c)) {
+//        evt.consume();
+//        }
+//        if (jtfDni.getText().length() >= 8 && !Character.isISOControl(c)) {
+//        evt.consume();
+//        }
+    }//GEN-LAST:event_jtfDniKeyTyped
+
+    private void jtfApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfApellidoKeyTyped
+//        char c = evt.getKeyChar();
+//        if (!Character.isLetter(c) && c != ' ' && !Character.isISOControl(c)) {
+//            evt.consume();
+//        }
+    }//GEN-LAST:event_jtfApellidoKeyTyped
+
+    private void jtfNombreAlumnoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfNombreAlumnoKeyTyped
+//        char c = evt.getKeyChar();
+//        if (!Character.isLetter(c) && c != ' ' && !Character.isISOControl(c)) {
+//            evt.consume();
+//        }
+    }//GEN-LAST:event_jtfNombreAlumnoKeyTyped
+
+    private void jtfDniFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfDniFocusLost
+        for (char c : jtfDni.getText().toCharArray()) {
+        if (!Character.isDigit(c)) {
+            JOptionPane.showMessageDialog(this, "El DNI solo puede contener números.");
+            jtfDni.requestFocus();
+            break;
+            }
+        }
+    }//GEN-LAST:event_jtfDniFocusLost
+
+    private void jtfApellidoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfApellidoFocusLost
+        for (char c : jtfApellido.getText().toCharArray()) {
+        if (!Character.isLetter(c) && c != ' ') {
+            JOptionPane.showMessageDialog(this, "El Apellido solo puede contener letras y espacios.");
+            jtfApellido.requestFocus();
+            break;
+            }
+        }
+    }//GEN-LAST:event_jtfApellidoFocusLost
+
+    private void jtfNombreAlumnoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfNombreAlumnoFocusLost
+        for (char c : jtfNombreAlumno.getText().toCharArray()) {
+        if (!Character.isLetter(c) && c != ' ') {
+            JOptionPane.showMessageDialog(this, "El Nombre solo puede contener letras y espacios.");
+            jtfNombreAlumno.requestFocus();
+            break;
+            }
+        }
+    }//GEN-LAST:event_jtfNombreAlumnoFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
