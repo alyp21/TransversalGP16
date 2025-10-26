@@ -349,7 +349,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
            alumnito.setApellido(jtfApellido.getText());
            alumnito.setNombre(jtfNombreAlumno.getText());
            //Definimos el formato de la fecha
-           DateTimeFormatter formato= DateTimeFormatter.ofPattern("yyyy/MM/dd");
+           DateTimeFormatter formato= DateTimeFormatter.ofPattern("yyyy-MM-dd");
            //Y acá aplicamos el formato
            alumnito.setFechaNacimiento(LocalDate.parse(jtfFechaNacimiento.getText(),formato));
            String estadoSeleccionado = (String) jcbEstadoAlumno.getSelectedItem();
@@ -436,7 +436,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             String apellido = jtfApellido.getText();
             String nombre = jtfNombreAlumno.getText();
             boolean estado = jcbEstadoAlumno.getSelectedItem().equals("Activo");
-            DateTimeFormatter formato= DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            DateTimeFormatter formato= DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
             Alumno a = new Alumno();
             a.setDni(dni);
@@ -452,7 +452,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "No se encontro ningun alumno con este dni.");
         }catch(java.time.DateTimeException e){
-            JOptionPane.showMessageDialog(this, "Error en el formato de la fecha. Use yyyy/MM/dd");
+            JOptionPane.showMessageDialog(this, "Error en el formato de la fecha. Use yyyy-MM-dd");
         }
     }//GEN-LAST:event_jbActualizarAlumnosActionPerformed
 
@@ -468,7 +468,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             if(alumnoActual!=null){
                 jtfApellido.setText(alumnoActual.getApellido());
                 jtfNombreAlumno.setText(alumnoActual.getNombre());
-                DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 jtfFechaNacimiento.setText(alumnoActual.getFechaNacimiento().format(formato));
                 if (alumnoActual.isEstado()){
                     jcbEstadoAlumno.setSelectedItem("Activo");
