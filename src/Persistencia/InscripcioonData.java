@@ -110,7 +110,6 @@ public class InscripcioonData {
             Inscripcion insc = new Inscripcion();
             insc.setIdInscripcion(rs.getInt("idInscripto"));
             
-            // (Estas líneas ya las tenías bien)
             Alumno alu = alum.buscarAlumno(rs.getInt("idAlumno"));
             Materia mat = md.buscarMateriaPorId(rs.getInt("idMateria"));
             

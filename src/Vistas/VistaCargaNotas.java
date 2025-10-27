@@ -14,13 +14,11 @@ import javax.swing.table.DefaultTableModel;
 
 public class VistaCargaNotas extends javax.swing.JInternalFrame {
  
-
     private Connection con;
     private InscripcioonData ins;
     private Inscripcion in;
     private AlumnooData ad;
     DefaultTableModel modeloT;
-    
     
     public VistaCargaNotas() {
         initComponents();
@@ -215,6 +213,10 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
                 int idMateria = (Integer) modeloT.getValueAt(i,0);
                 double nuevaNota = Double.parseDouble(modeloT.getValueAt(i, 2).toString());
                 
+                if (nuevaNota <0 || nuevaNota>10){
+                    JOptionPane.showMessageDialog(this, "Error en la fila " + (i+1)+ "no es un numero valido");
+                    return;
+                }
                 if(!ins.actualizarNota(idAlumno, idMateria, nuevaNota)){
                     todasGuardadas = false;
                 }
@@ -260,7 +262,7 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
         modeloT.addColumn("Nota");
     
         jtCargaNotas.setModel(modeloT);
-}
+        }
     public void cargarAlumnos(){
     jcbAlumnos.removeAllItems();
     List<Alumno> lista = ad.verAlumnos();

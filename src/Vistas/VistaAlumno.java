@@ -432,6 +432,23 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
     private void jbActualizarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActualizarAlumnosActionPerformed
         try {
+            if (!esDniValido(jtfDni.getText())) {
+            JOptionPane.showMessageDialog(this, "El DNI es inválido. Debe tener 8 números.");
+            jtfDni.requestFocus();
+            return;
+        }
+        
+        if (!esTextoValido(jtfApellido.getText())) {
+            JOptionPane.showMessageDialog(this, "El Apellido es inválido. Solo letras y espacios.");
+            jtfApellido.requestFocus();
+            return;
+        }
+
+        if (!esTextoValido(jtfNombreAlumno.getText())) {
+            JOptionPane.showMessageDialog(this, "El Nombre es inválido. Solo letras y espacios.");
+            jtfNombreAlumno.requestFocus();
+            return;
+        }
             int dni = Integer.parseInt(jtfDni.getText());
             String apellido = jtfApellido.getText();
             String nombre = jtfNombreAlumno.getText();
@@ -512,33 +529,23 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jtfNombreAlumnoKeyTyped
 
     private void jtfDniFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfDniFocusLost
-        for (char c : jtfDni.getText().toCharArray()) {
-        if (!Character.isDigit(c)) {
-            JOptionPane.showMessageDialog(this, "El DNI solo puede contener números.");
-            jtfDni.requestFocus();
-            break;
-            }
-        }
+        if (!esDniValido(jtfDni.getText())) {
+        JOptionPane.showMessageDialog(this, "El DNI debe tener 8 números, sin letras ni puntos.");
+        jtfDni.requestFocus(); 
+    }
     }//GEN-LAST:event_jtfDniFocusLost
 
     private void jtfApellidoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfApellidoFocusLost
-        for (char c : jtfApellido.getText().toCharArray()) {
-        if (!Character.isLetter(c) && c != ' ') {
-            JOptionPane.showMessageDialog(this, "El Apellido solo puede contener letras y espacios.");
-            jtfApellido.requestFocus();
-            break;
-            }
-        }
+        if (!esTextoValido(jtfApellido.getText())) {
+        JOptionPane.showMessageDialog(this, "El Apellido solo puede contener letras y espacios.");
+        jtfApellido.requestFocus();
     }//GEN-LAST:event_jtfApellidoFocusLost
-
+    }
     private void jtfNombreAlumnoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfNombreAlumnoFocusLost
-        for (char c : jtfNombreAlumno.getText().toCharArray()) {
-        if (!Character.isLetter(c) && c != ' ') {
-            JOptionPane.showMessageDialog(this, "El Nombre solo puede contener letras y espacios.");
-            jtfNombreAlumno.requestFocus();
-            break;
-            }
-        }
+        if (!esTextoValido(jtfNombreAlumno.getText())) {
+        JOptionPane.showMessageDialog(this, "El Nombre solo puede contener letras y espacios.");
+        jtfNombreAlumno.requestFocus();
+    }
     }//GEN-LAST:event_jtfNombreAlumnoFocusLost
 
 
@@ -584,7 +591,29 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             a.getFechaNacimiento(),
             a.isEstado() ? "Activo" : "Inactivo"
         });
+        }
     }
+    private boolean esTextoValido(String texto){
+    if(texto.trim().isEmpty()){
+        return false;
+    }
+    for(char c : texto.toCharArray()){
+        if(!Character.isLetter(c) && c != ' '){
+            return false;
+        }
+    }
+    return true;
+    }
+    private boolean esDniValido(String dni){
+        if(dni.trim().isEmpty() || dni.length() !=8){
+            return false;
+        }
+        for (char c : dni.toCharArray()){
+            if(!Character.isDigit(c)){
+                return false;
+            }
+        }
+        return true;
     }
     private void limpiarCampos() {
     jtfDni.setText("");
@@ -592,7 +621,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     jtfNombreAlumno.setText("");
     jtfFechaNacimiento.setText("");
     jcbEstadoAlumno.setSelectedIndex(0);
-}
+    }
     
     private void armarCabeceraTabla() {
         modeloTabla = new DefaultTableModel();
