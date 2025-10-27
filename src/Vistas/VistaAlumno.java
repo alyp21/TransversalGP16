@@ -515,8 +515,8 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         for (char c : jtfDni.getText().toCharArray()) {
         if (!Character.isDigit(c)) {
             JOptionPane.showMessageDialog(this, "El DNI solo puede contener números.");
-            jtfDni.requestFocus(); // Devuelve el foco al campo para forzar la corrección
-            break; // Termina el bucle
+            jtfDni.requestFocus();
+            break; 
         }
     }
     }//GEN-LAST:event_jtfDniFocusLost
@@ -525,7 +525,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         for (char c : jtfApellido.getText().toCharArray()) {
         if (!Character.isLetter(c) && c != ' ') {
             JOptionPane.showMessageDialog(this, "El Apellido solo puede contener letras y espacios.");
-            jtfApellido.requestFocus(); // Devuelve el foco
+            jtfApellido.requestFocus();
             break;
         }
     }//GEN-LAST:event_jtfApellidoFocusLost
@@ -534,7 +534,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         for (char c : jtfNombreAlumno.getText().toCharArray()) {
         if (!Character.isLetter(c) && c != ' ') {
             JOptionPane.showMessageDialog(this, "El Nombre solo puede contener letras y espacios.");
-            jtfNombreAlumno.requestFocus(); // Devuelve el foco
+            jtfNombreAlumno.requestFocus();
             break;
         }
     }
