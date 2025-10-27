@@ -379,7 +379,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
        }
     }//GEN-LAST:event_jbEliminarAlumnosActionPerformed
- 
+    
     private void jbAltaLogicaAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAltaLogicaAlumnoActionPerformed
         try {
         int dni = Integer.parseInt(jtfDni.getText());
