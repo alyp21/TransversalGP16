@@ -87,7 +87,10 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
                 "Id", "Nombre", "Apellido"
             }
         ));
+        jtListarInscripciones.setVerifyInputWhenFocusTarget(false);
         jScrollPane1.setViewportView(jtListarInscripciones);
+        jtListarInscripciones.getAccessibleContext().setAccessibleName("");
+        jtListarInscripciones.getAccessibleContext().setAccessibleDescription("");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -166,7 +169,11 @@ public class VistaListarInscripciones extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private void armarCabeceraTabla() {
-        modelo = new DefaultTableModel();
+        modelo = new DefaultTableModel(){
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+};
         modelo.addColumn("Id");
         modelo.addColumn("Apellido");
         modelo.addColumn("Nombre");

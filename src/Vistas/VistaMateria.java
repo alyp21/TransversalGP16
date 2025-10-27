@@ -193,8 +193,21 @@ public class VistaMateria extends javax.swing.JInternalFrame {
             new String [] {
                 "Nombre", "Año", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jtMaterias);
+        if (jtMaterias.getColumnModel().getColumnCount() > 0) {
+            jtMaterias.getColumnModel().getColumn(0).setResizable(false);
+            jtMaterias.getColumnModel().getColumn(1).setResizable(false);
+            jtMaterias.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -437,7 +450,11 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 }
     
     private void armarCabecera() {
-        modelo = new DefaultTableModel();
+        modelo = new DefaultTableModel(){
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+};
         modelo.addColumn("Nombre");
         modelo.addColumn("Año");
         modelo.addColumn("Estado");

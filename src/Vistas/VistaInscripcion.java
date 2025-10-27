@@ -33,7 +33,11 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         aData = new AlumnooData(con);
         mData = new MateriaData(con);
         listaA = aData.verAlumnos();
-        modelo = new DefaultTableModel();
+        modelo = new DefaultTableModel(){
+            public boolean isCellEditable (int row, int column){
+                return false;
+            }
+        };
         
         ins = new InscripcioonData(con);
         armarCabeceraTabla();
@@ -78,9 +82,23 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
             new String [] {
                 "ID", "Nombre", "Año", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jtMaterias.setToolTipText("");
         jScrollPane1.setViewportView(jtMaterias);
+        if (jtMaterias.getColumnModel().getColumnCount() > 0) {
+            jtMaterias.getColumnModel().getColumn(0).setResizable(false);
+            jtMaterias.getColumnModel().getColumn(1).setResizable(false);
+            jtMaterias.getColumnModel().getColumn(2).setResizable(false);
+            jtMaterias.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         jbInscribir.setText("Inscribir");
         jbInscribir.setEnabled(false);
